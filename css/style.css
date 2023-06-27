@@ -92,16 +92,21 @@ ul li a:hover {
 }
 
 /* Section */
+.text h1 {
+  font-size: 24px;
+}
+
 span {
   color: #83b735;
+  font-size: 38px;
 }
 
 .download .btn {
-  padding: 7px 20px;
+  padding: 4px 15px;
   background-color: #83b735;
   color: #fff;
   border: 1px solid #83b735;
-  border-radius: 10px;
+  border-radius: 15px;
 }
 
 .btn:hover {
@@ -151,7 +156,7 @@ span {
 }
 
 .social-media a {
-  font-size: 20px;
+  font-size: 18px;
   color: #fff;
   background-color: #83b735;
   border-radius: 50%;
@@ -161,7 +166,6 @@ span {
 }
 
 .social-media a:hover {
-  font-size: 20px;
   color: #83b735;
   background-color: #fff;
   transition: 0.2s;
