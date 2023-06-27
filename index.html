@@ -3,18 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Card Profile</title>
-    <link rel="icon" href="assets/images/Profile.jpg" />
+    <title>Home</title>
+    <link rel="icon" href="assets/images/logo3.png" />
 
-    <!-- Link to Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,700&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Link To CSS -->
+    <link rel="stylesheet" href="css/style.css" />
 
-    <!-- Link To Font Awesome -->
+    <!-- Link CDN To Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -22,134 +17,95 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-
-    <!-- CSS -->
-    <style>
-      * {
-        font-family: "Poppins", sans-serif;
-      }
-
-      body {
-        background-color: #f5f5f5;
-      }
-    </style>
   </head>
   <body>
-    <div
-      style="
-        margin: 10%;
-        background-color: #fff;
-        padding: 80px;
-        border-radius: 8px;
-        box-shadow: 0 0 20px #c8c8c8;
-      "
-    >
-      <h1>
-        <span style="color: #83b735">Hello,</span> Welcome To My Personal Web
-      </h1>
-      <p style="text-align: justify">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi, sint,
-        magni dolorem in culpa nostrum, libero tempore minima recusandae a sunt
-        maxime quisquam laboriosam. Quia tempora recusandae assumenda minima
-        temporibus. Aspernatur exercitationem enim provident tenetur harum ipsam
-        repellendus numquam possimus?
-      </p>
-      <button
-        style="
-          background-color: #000;
-          color: #fff;
-          padding: 10px 20px;
-          border: none;
-          border-radius: 10px;
-          cursor: pointer;
-        "
-      >
-        Contact
-      </button>
-      <div style="display: flex">
-        <p>Download CV</p>
-        <a href="" style="margin: 16px 0; margin-left: 15px"
-          ><i class="fa-solid fa-download" style="color: #83b735"></i
-        ></a>
-      </div>
+    <!-- Navbar Start -->
+    <nav>
+      <div class="nav-left">
+        <ul>
+          <li>
+            <a href="" class="logo"><i class="fa-solid fa-leaf"></i></a>
 
-      <!-- Social Media -->
-      <div
-        style="
-          display: flex;
-          justify-content: center;
-          margin-top: 0;
-          margin-bottom: 50px;
-          gap: 10px;
-        "
-      >
-        <a
-          href=""
-          style="
-            font-size: 24px;
-            color: #fff;
-            background-color: #83b735;
-            border-radius: 50%;
-            padding: 4px 10px;
-          "
-          ><i class="fa-brands fa-linkedin-in"></i
-        ></a>
-        <a
-          href=""
-          style="
-            font-size: 24px;
-            color: #fff;
-            background-color: #83b735;
-            border-radius: 50%;
-            padding: 4px 10px;
-          "
-          ><i class="fa-brands fa-instagram"></i
-        ></a>
-        <a
-          href=""
-          style="
-            font-size: 24px;
-            color: #fff;
-            background-color: #83b735;
-            border-radius: 50%;
-            padding: 4px 10px;
-          "
-          ><i class="fa-brands fa-facebook"></i
-        ></a>
-        <a
-          href=""
-          style="
-            font-size: 24px;
-            color: #fff;
-            background-color: #83b735;
-            border-radius: 50%;
-            padding: 4px 10px;
-          "
-          ><i class="fa-brands fa-twitter"></i
-        ></a>
+            <!-- <a href="" class="logo"
+              ><img
+                src="assets/images/logo3.png"
+                style="width: 30px; height: 30px"
+            /></a> -->
+          </li>
+          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="project.html">My Project</a></li>
+        </ul>
       </div>
+      <div class="nav-right"><a href="contact.html">Contact</a></div>
+    </nav>
+    <!-- Navbar End -->
 
-      <!-- Profile Card  -->
-      <div
-        style="
-          width: 300px;
-          margin: auto;
-          padding: 20px;
-          box-shadow: 0 0 5px #c8c8c8;
-          border-radius: 10px;
-          text-align: center;
-        "
-      >
-        <img
-          src="assets/images/Profile.jpg"
-          alt=""
-          style="width: 100%; border-radius: 10px 10px 0 0"
-        />
-        <h2 style="margin-bottom: 0; margin-top: 15px; font-size: 32px">
-          <span style="color: #83b735">See</span>us.
-        </h2>
-        <p style="font-weight: 500; margin-top: 5px">Fullstack Developer</p>
-      </div>
+    <!-- Container Start -->
+    <div class="container">
+      <section>
+        <div class="left">
+          <div class="text">
+            <h1><span>Hello,</span> Welcome To My Personal Web</h1>
+            <p>
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+              Deserunt, dolor similique quaerat laborum excepturi tempore.
+              Aliquam iusto repellat qui vero unde officiis quas, quibusdam
+              voluptas quaerat explicabo incidunt minus sapiente cupiditate!
+              Distinctio molestiae illo corporis, amet, accusamus aliquam eaque,
+              obcaecati delectus autem quos nihil laboriosam fugit ullam
+              voluptas! Suscipit consequuntur sed dolores nulla quibusdam, ut
+              assumenda neque voluptate itaque delectus.
+            </p>
+          </div>
+          <div class="download">
+            <a href="" class="btn">Contact</a>
+            <p>Download CV</p>
+            <a
+              href="https://responsive-portfolio-blush.vercel.app/"
+              target="_blank"
+              ><i class="fa-solid fa-download"></i
+            ></a>
+          </div>
+          <div class="social-media">
+            <a href=""><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href=""><i class="fa-brands fa-instagram"></i></a>
+            <a href="" style="padding: 4px 14px"
+              ><i class="fa-brands fa-facebook-f"></i
+            ></a>
+            <a href=""><i class="fa-brands fa-twitter"></i></a>
+          </div>
+        </div>
+        <div class="right">
+          <!-- Profile Card  -->
+          <div
+            style="
+              width: 300px;
+              margin: auto;
+              padding: 20px;
+              box-shadow: 0 0 5px #c8c8c8;
+              border-radius: 10px;
+              text-align: center;
+            "
+          >
+            <img
+              src="assets/images/Profile.jpg"
+              alt=""
+              style="width: 100%; border-radius: 10px 10px 0 0"
+            />
+            <h2 style="margin-bottom: 0; margin-top: 15px; font-size: 32px">
+              <span style="color: #83b735">See</span>us.
+            </h2>
+            <p style="font-weight: 500; margin-top: 5px">Fullstack Developer</p>
+          </div>
+        </div>
+      </section>
     </div>
+    <!-- Container End -->
+
+    <!-- Footer Start -->
+    <footer class="copyright">
+      <p>&#169; Seeus | All Right Reserved.</p>
+    </footer>
+    <!-- Footer End -->
   </body>
 </html>

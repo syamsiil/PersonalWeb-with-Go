@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact</title>
+    <link rel="icon" href="assets/images/logo3.png" />
+
+    <!-- Link To CSS -->
+    <link rel="stylesheet" href="css/contact.css" />
+
+    <!-- Link CDN To Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <!-- Navbar Start -->
+    <nav>
+      <div class="nav-left">
+        <ul>
+          <li>
+            <a href="" class="logo"><i class="fa-solid fa-leaf"></i></a>
+
+            <!-- <a href="" class="logo"
+                ><img
+                  src="assets/images/logo3.png"
+                  style="width: 30px; height: 30px"
+              /></a> -->
+          </li>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="project.html">My Project</a></li>
+        </ul>
+      </div>
+      <div class="nav-right"><a href="contact.html">Contact</a></div>
+    </nav>
+    <!-- Navbar End -->
+
+    <!-- Contact Start -->
+    <div class="container">
+      <h2 style="margin: 50px auto; text-align: center; font-size: 32px">
+        <span style="color: #83b735">Get</span> In Touch
+      </h2>
+
+      <div class="contact-form">
+        <form action="">
+          <div class="form-detail">
+            <label for="input-name">Project Name</label>
+            <input
+              type="text"
+              name="input-name"
+              id="input-name"
+              placeholder="Your project name"
+            />
+          </div>
+
+          <div class="form-detail">
+            <label for="input-email">Email</label>
+            <input
+              type="email"
+              name="input-email"
+              id="input-email"
+              placeholder="example@gmail.com "
+            />
+          </div>
+
+          <div class="form-detail">
+            <label for="input-number">Phone Number</label>
+            <input
+              type="email"
+              name="input-number"
+              id="input-number"
+              placeholder="Ex: 0821111222333"
+            />
+          </div>
+
+          <div class="form-detail">
+            <label for="input-subject">Subject</label>
+            <select id="input-subject">
+              <option value="" hidden>Select</option>
+              <option>Front End</option>
+              <option>Back End</option>
+              <option>Fullstack</option>
+            </select>
+          </div>
+
+          <div class="form-detail">
+            <label for="input-message">Your Message</label>
+            <textarea
+              name="input-message"
+              id="input-message"
+              placeholder="write your message here..."
+            ></textarea>
+          </div>
+          <div class="btn">
+            <button>Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- Contact End -->
+
+    <!-- Footer Start -->
+    <footer class="copyright">
+      <p>&#169; Seeus | All Right Reserved.</p>
+    </footer>
+    <!-- Footer End -->
+  </body>
+</html>
