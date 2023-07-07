@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Project</title>
+
+    <link rel="icon" href="assets/images/logo3.png" />
+
+    <!-- Link To CSS -->
+    <link rel="stylesheet" href="css/add-project.css" />
+
+    <!-- Link CDN To Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <!-- Navbar Start -->
+    <nav>
+      <div class="nav-left">
+        <ul>
+          <li>
+            <a href="" class="logo"><i class="fa-solid fa-leaf"></i></a>
+          </li>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="project.html" class="active">My Project</a></li>
+        </ul>
+      </div>
+      <div class="nav-right"><a href="contact.html">Contact</a></div>
+    </nav>
+    <!-- Navbar End -->
+
+    <!-- Add Project Start -->
+    <section class="add-project" id="add-project">
+      <h2 style="margin: 50px auto; text-align: center; font-size: 32px">
+        <span style="color: #83b735">Add</span> Project
+      </h2>
+
+      <!-- Form Add Project -->
+      <div class="form-add-project" style="width: 500px; margin: 0 auto">
+        <form
+          action=""
+          style="padding: 0 5%; margin-bottom: 50px"
+          onsubmit="projectCard(event)"
+        >
+          <!-- project name -->
+          <div class="form-detail">
+            <label for="input-project-name"> Project Name </label>
+            <input
+              type="text"
+              name="input-project-name"
+              id="input-project-name"
+              placeholder="What ur project? "
+            />
+          </div>
+
+          <!-- date -->
+          <div style="margin-bottom: 12px; display: flex">
+            <div class="start-date" style="margin-right: 10px">
+              <label for="input-start-date">Start Date</label>
+              <input
+                type="date"
+                name="input-start-date"
+                id="input-start-date"
+                style="flex: 50%; width: 100%"
+              />
+            </div>
+            <div class="end-date" style="flex: 50%; width: 100%">
+              <label for="input-end-date" style="margin-bottom: 7px"
+                >End Date</label
+              >
+              <input
+                type="date"
+                name="input-end-date"
+                id="input-end-date"
+                style="flex: 50%; width: 100%"
+              />
+            </div>
+          </div>
+
+          <!-- description -->
+          <div class="form-detail">
+            <label for="input-description">Description</label>
+            <textarea
+              name="input-description"
+              id="input-description"
+              placeholder="write ur project description here..."
+            ></textarea>
+          </div>
+
+          <!-- technologies -->
+          <label for="tecnologies">Technologies</label>
+          <div class="form-detail">
+            <div style="display: flex">
+              <div style="flex: 50%">
+                <input
+                  type="checkbox"
+                  name="input-nodejs"
+                  id="input-nodejs"
+                  class="multi-input"
+                />
+                <label class="label-skill" for="input-nodejs">Node Js</label>
+              </div>
+              <div style="flex: 50%">
+                <input
+                  type="checkbox"
+                  name="input-reactjs"
+                  id="input-reactjs"
+                  class="multi-input"
+                />
+                <label class="label-skill" for="input-reactjs">React Js</label>
+              </div>
+            </div>
+            <div style="display: flex">
+              <div style="flex: 50%">
+                <input
+                  type="checkbox"
+                  name="input-javascript"
+                  id="input-javascript"
+                  class="multi-input"
+                />
+                <label class="label-skill" for="input-javascript"
+                  >Javascript</label
+                >
+              </div>
+              <div style="flex: 50%">
+                <input
+                  type="checkbox"
+                  name="input-html5"
+                  id="input-html5"
+                  class="multi-input"
+                />
+                <label class="label-skill" for="input-html5">HTML5</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- upload image -->
+          <div class="form-detail">
+            <label for="input-image">Upload Image</label>
+            <input type="file" name="input-image" id="input-image" />
+          </div>
+
+          <div style="text-align: end">
+            <button
+              type="submit"
+              class="btn"
+              style="border-radius: 7px; margin-top: 15px; padding: 10px 20px"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+    <!-- Add Project End -->
+
+    <!-- List Project Start -->
+    <section id="project" style="background-color: #f3f3f3; padding: 50px 5%">
+      <h2 style="margin: 0 auto 50px; text-align: center; font-size: 32px">
+        <span style="color: #83b735">My</span> Project
+      </h2>
+
+      <div class="list-project" id="contents">
+        <!-- Project Card 1 -->
+        <div class="project-card">
+          <img src="assets/images/post-1.jpg" alt="" class="project-card-img" />
+          <a href="" class="project-card-title">Seeus Mobile App</a>
+          <p class="project-card-duration">Duration: 1 Month</p>
+          <p class="project-card-description">
+            App that used for Seeus student, it was deployed and can downloaded
+            on Appstore. Happy download.
+          </p>
+
+          <div class="project-card-app">
+            <i class="fa-brands fa-node-js"></i>
+            <i class="fa-brands fa-react"></i>
+            <i class="fa-brands fa-js"></i>
+            <i class="fa-brands fa-html5"></i>
+          </div>
+
+          <div class="project-card-btn">
+            <button class="btn">Edit</button>
+            <button class="btn">Delete</button>
+          </div>
+        </div>
+        <!-- Project Card 2 -->
+        <div class="project-card">
+          <img src="assets/images/post-2.jpg" alt="" class="project-card-img" />
+          <a href="" class="project-card-title">Seeus Mobile App</a>
+          <p class="project-card-duration">Duration: 1 Month</p>
+          <p class="project-card-description">
+            App that used for Seeus student, it was deployed and can downloaded
+            on Appstore. Happy download.
+          </p>
+
+          <div class="project-card-app">
+            <i class="fa-brands fa-app-store-ios"></i>
+            <i class="fa-brands fa-github"></i>
+            <i class="fa-brands fa-discord"></i>
+          </div>
+
+          <div class="project-card-btn">
+            <button class="btn">Edit</button>
+            <button class="btn">Delete</button>
+          </div>
+        </div>
+        <!-- Project Card 3 -->
+        <div class="project-card">
+          <img src="assets/images/post-3.jpg" alt="" class="project-card-img" />
+          <a href="" class="project-card-title">Seeus Mobile App</a>
+          <p class="project-card-duration">Duration: 1 Month</p>
+          <p class="project-card-description">
+            App that used for Seeus student, it was deployed and can downloaded
+            on Appstore. Happy download.
+          </p>
+
+          <div class="project-card-app">
+            <i class="fa-brands fa-app-store-ios"></i>
+            <i class="fa-brands fa-github"></i>
+            <i class="fa-brands fa-discord"></i>
+          </div>
+
+          <div class="project-card-btn">
+            <button class="btn">Edit</button>
+            <button class="btn">Delete</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- List Project End -->
+
+    <!-- Footer Start -->
+    <footer class="copyright">
+      <p>&#169; Seeus | All Right Reserved.</p>
+    </footer>
+    <!-- Footer End -->
+
+    <!-- Script To JS -->
+    <script src="js/project.js"></script>
+    <!-- <script src="js/add-project.js"></script> -->
+  </body>
+</html>

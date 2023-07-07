@@ -1,0 +1,115 @@
+/* Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,700&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  list-style: none;
+  scroll-behavior: smooth;
+  scroll-padding-top: 2rem;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Custom selection */
+*::selection {
+  color: #fff;
+  background: #83b735;
+}
+
+/* Custom Scroll Bar */
+html::-webkit-scrollbar {
+  width: 0.5rem;
+}
+html::-webkit-scrollbar-track {
+  background: transparent;
+}
+html::-webkit-scrollbar-thumb {
+  background: #83b735;
+  border-radius: 5rem;
+}
+
+/* Navbar */
+nav {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 5%;
+  height: 10vh;
+  align-items: center;
+  background-color: #f2f2f2;
+  font-size: 16px;
+}
+
+ul {
+  display: flex;
+  align-items: center;
+}
+ul li a {
+  margin-right: 20px;
+  color: #000;
+  font-weight: 400;
+}
+
+ul li a:hover {
+  color: #83b735;
+  transition: 0.2s;
+}
+
+.logo {
+  font-size: 32px;
+  color: #99cc4c;
+}
+
+.nav-right a {
+  padding: 7px 14px;
+  background-color: #99cc4c;
+  color: #fff;
+  border-radius: 10px;
+  font-weight: 400;
+}
+
+.nav-right a:hover {
+  background-color: #83b735;
+  transition: 0.2s;
+}
+
+.active {
+  color: #000;
+  font-weight: 600;
+}
+
+.project-about-right h3 {
+  margin-bottom: 5px;
+  font-weight: 550;
+}
+
+.project-about-right span {
+  margin-left: 5px;
+}
+
+.skill-detail {
+  display: flex;
+  flex: 50%;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.skill-detail i {
+  margin-right: 10px;
+}
+
+/* Footer */
+footer {
+  margin-top: 50px;
+  padding: 15px;
+  text-align: center;
+  background-color: #0e5c6a;
+  justify-content: center;
+}
+
+footer p {
+  text-align: center;
+  color: white;
+  font-size: 14px;
+  margin-bottom: 0;
+}

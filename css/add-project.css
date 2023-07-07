@@ -1,0 +1,192 @@
+/* Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,700&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  list-style: none;
+  scroll-behavior: smooth;
+  scroll-padding-top: 2rem;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Custom selection */
+*::selection {
+  color: #fff;
+  background: #83b735;
+}
+
+/* Custom Scroll Bar */
+html::-webkit-scrollbar {
+  width: 0.5rem;
+}
+html::-webkit-scrollbar-track {
+  background: transparent;
+}
+html::-webkit-scrollbar-thumb {
+  background: #83b735;
+  border-radius: 5rem;
+}
+
+/* Navbar */
+nav {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 5%;
+  height: 10vh;
+  align-items: center;
+  background-color: #f2f2f2;
+  font-size: 16px;
+}
+
+ul {
+  display: flex;
+  align-items: center;
+}
+ul li a {
+  margin-right: 20px;
+  color: #000;
+  font-weight: 400;
+}
+
+ul li a:hover {
+  color: #83b735;
+  transition: 0.2s;
+}
+
+.logo {
+  font-size: 32px;
+  color: #99cc4c;
+}
+
+.nav-right a {
+  padding: 7px 14px;
+  background-color: #99cc4c;
+  color: #fff;
+  border-radius: 10px;
+  font-weight: 400;
+}
+
+.nav-right a:hover {
+  background-color: #83b735;
+  transition: 0.2s;
+}
+
+.active {
+  color: #000;
+  font-weight: 600;
+}
+
+/* Add Project */
+.form-detail {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+
+label {
+  font-weight: 500;
+  margin-bottom: 7px;
+}
+
+.label-skill {
+  font-weight: 300;
+}
+
+input,
+textarea {
+  padding: 10px;
+  border-radius: 7px;
+  border: 1px solid #848484;
+}
+
+.btn {
+  padding: 5px 20px;
+  background-color: #99cc4c;
+  color: #fff;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background-color: #83b735;
+}
+
+/* List Project */
+.list-project {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, auto));
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 0 5%;
+}
+
+.project-card {
+  background: rgb(255, 255, 255);
+  box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  border-radius: 0.5rem;
+}
+
+.project-card-img {
+  width: 100%;
+  height: 200px;
+  object-fit: initial;
+  object-position: center;
+  border-radius: 0.5rem;
+}
+
+.project-card-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: rgb(0, 0, 0);
+  /* To Remain Title In 2 lines*/
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.project-card-duration {
+  color: #5d5d5d;
+  font-size: 14px;
+}
+
+.project-card-description {
+  font-size: 0.9rem;
+  line-height: 1.5rem;
+  margin-top: 20px;
+  /* To Remain Description In 3 lines*/
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+.project-card-app {
+  margin: 20px 0 20px;
+}
+
+.project-card-btn {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+}
+
+/* Footer */
+footer {
+  padding: 15px;
+  text-align: center;
+  background-color: #0e5c6a;
+  justify-content: center;
+}
+
+footer p {
+  text-align: center;
+  color: white;
+  font-size: 14px;
+  margin-bottom: 0;
+}
