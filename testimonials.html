@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Testimonials</title>
+    <link rel="icon" href="assets/images/logo3.png" />
+
+    <!-- Link To CSS -->
+    <link rel="stylesheet" href="css/testimonials.css" />
+
+    <!-- Link CDN To Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <!-- Navbar Start -->
+    <nav>
+      <div class="nav-left">
+        <ul>
+          <li>
+            <a href="" class="logo"><i class="fa-solid fa-leaf"></i></a>
+          </li>
+          <li><a href="index.html" class="collapse-item">Home</a></li>
+          <li>
+            <a href="add-project.html" class="collapse-item">My Project</a>
+          </li>
+          <li>
+            <a href="testimonials.html" class="active collapse-item"
+              >Testimonials</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="nav-right collapse-item">
+        <a href="contact.html">Contact</a>
+      </div>
+
+      <!-- Hamburger Button -->
+      <div class="hamburger-btn" id="hamburger-btn">
+        <button onclick="openHamburger()">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </nav>
+    <!-- Navbar End -->
+
+    <!-- Hamburger Menu Start -->
+    <div class="hamburger-container" id="hamburger-container">
+      <a href="index.html">Home</a>
+      <a href="add-project.html">My Project</a>
+      <a href="testimonials.html" class="active">Testimonials</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <!-- Hamburger Menu End -->
+
+    <!-- Testimonials Start -->
+    <section class="container" id="container">
+      <h2 style="margin: 50px auto 20px; text-align: center; font-size: 32px">
+        <span style="color: #83b735">My</span> Testimonials
+      </h2>
+      <!-- <p
+        style="
+          font-size: 20px;
+          font-weight: 600;
+          text-align: center;
+          margin-bottom: 20px;
+        "
+      >
+        Rating By Star
+      </p>
+
+      <div
+        class="rating-group"
+        style="display: flex; justify-content: center; margin-bottom: 20px"
+      >
+        <a href="">All</a>
+        <a href="">1<i class="fa-solid fa-star"></i></a>
+        <a href="">2<i class="fa-solid fa-star"></i></a>
+        <a href="">3<i class="fa-solid fa-star"></i></a>
+        <a href="">4<i class="fa-solid fa-star"></i></a>
+        <a href="">5<i class="fa-solid fa-star"></i></a>
+      </div> -->
+
+      <div class="testimonials" id="testimonials">
+        <!-- Project Card 1 -->
+        <!-- <div class="project-card">
+          <img
+            src="assets/images/Profile.jpg"
+            alt=""
+            class="project-card-img"
+          />
+
+          <p class="project-card-description">
+            App that used for Seeus student, it was deployed and can downloaded
+            on Appstore. Happy download.
+          </p>
+
+          <p style="font-weight: 500; margin-top: 15px; text-align: end">
+            Seeus
+          </p>
+        </div> -->
+      </div>
+    </section>
+    <!-- Testimonials End -->
+
+    <!-- Footer Start -->
+    <footer class="copyright">
+      <p>&#169; Seeus | All Right Reserved.</p>
+    </footer>
+    <!-- Footer End -->
+
+    <!-- Link To JS -->
+    <script src="js/navbar.js"></script>
+    <script src="js/testimonials.js"></script>
+    <!-- <script src="js/exercise/fp-example.js"></script> -->
+  </body>
+</html>

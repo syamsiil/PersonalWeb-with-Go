@@ -27,13 +27,40 @@
           <li>
             <a href="" class="logo"><i class="fa-solid fa-leaf"></i></a>
           </li>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="project.html" class="active">My Project</a></li>
+          <li><a href="index.html" class="collapse-item">Home</a></li>
+          <li>
+            <a href="add-project.html" class="active collapse-item"
+              >My Project</a
+            >
+          </li>
+          <li>
+            <a href="testimonials.html" class="active collapse-item"
+              >Testimonials</a
+            >
+          </li>
         </ul>
       </div>
-      <div class="nav-right"><a href="contact.html">Contact</a></div>
+      <div class="nav-right collapse-item">
+        <a href="contact.html">Contact</a>
+      </div>
+
+      <!-- Hamburger Button -->
+      <div class="hamburger-btn" id="hamburger-btn">
+        <button onclick="openHamburger()">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
     </nav>
     <!-- Navbar End -->
+
+    <!-- Hamburger Menu Start -->
+    <div class="hamburger-container" id="hamburger-container">
+      <a href="index.html">Home</a>
+      <a href="add-project.html" class="active">My Project</a>
+      <a href="testimonials.html">Testimonials</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <!-- Hamburger Menu End -->
 
     <!-- Add Project Start -->
     <section class="add-project" id="add-project">
@@ -45,7 +72,7 @@
       <div class="form-add-project" style="width: 500px; margin: 0 auto">
         <form
           action=""
-          style="padding: 0 5%; margin-bottom: 50px"
+          style="padding: 0 10%; margin-bottom: 50px"
           onsubmit="projectCard(event)"
         >
           <!-- project name -->
@@ -243,6 +270,6 @@
 
     <!-- Script To JS -->
     <script src="js/project.js"></script>
-    <!-- <script src="js/add-project.js"></script> -->
+    <script src="js/navbar.js"></script>
   </body>
 </html>

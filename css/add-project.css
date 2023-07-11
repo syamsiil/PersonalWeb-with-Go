@@ -78,6 +78,61 @@ ul li a:hover {
   font-weight: 600;
 }
 
+/* Hamburger */
+.hamburger-btn {
+  display: none;
+}
+
+.hamburger-btn button {
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+.hamburger-btn i {
+  background-color: #99cc4c;
+  color: #fff;
+  padding: 7px;
+  border-radius: 10px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.hamburger-btn i:hover {
+  background-color: #83b735;
+}
+
+.hamburger-container {
+  flex-direction: column;
+  align-items: center;
+  display: none;
+  background-color: #f2f2f2;
+}
+
+.hamburger-container a {
+  color: #000;
+  font-weight: 400;
+  margin-bottom: 12px;
+}
+
+.hamburger-container a:hover {
+  color: #83b735;
+}
+
+.hamburger-container .active {
+  background-color: #99cc4c;
+  color: #fff;
+  margin-bottom: 5px;
+  padding: 7px 14px;
+  border-radius: 15px;
+  font-weight: 400;
+}
+
+.hamburger-container .active:hover {
+  background-color: #83b735;
+  color: #fff;
+}
+
 /* Add Project */
 .form-detail {
   display: flex;
@@ -189,4 +244,19 @@ footer p {
   color: white;
   font-size: 14px;
   margin-bottom: 0;
+}
+
+/* Making Responsive */
+@media only screen and (max-width: 768px) {
+  .collapse-item {
+    display: none;
+  }
+
+  .hamburger-btn {
+    display: block;
+  }
+
+  /* .hamburger-container {
+    display: flex;
+  } */
 }

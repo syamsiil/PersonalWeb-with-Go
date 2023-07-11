@@ -25,20 +25,37 @@
         <ul>
           <li>
             <a href="" class="logo"><i class="fa-solid fa-leaf"></i></a>
-
-            <!-- <a href="" class="logo"
-              ><img
-                src="assets/images/logo3.png"
-                style="width: 30px; height: 30px"
-            /></a> -->
           </li>
-          <li><a href="index.html" class="active">Home</a></li>
-          <li><a href="add-project.html">My Project</a></li>
+          <li><a href="index.html" class="active collapse-item">Home</a></li>
+          <li>
+            <a href="add-project.html" class="collapse-item">My Project</a>
+          </li>
+          <li>
+            <a href="testimonials.html" class="collapse-item">Testimonials</a>
+          </li>
         </ul>
       </div>
-      <div class="nav-right"><a href="contact.html">Contact</a></div>
+      <div class="nav-right collapse-item">
+        <a href="contact.html">Contact</a>
+      </div>
+
+      <!-- Hamburger Button -->
+      <div class="hamburger-btn" id="hamburger-btn">
+        <button onclick="openHamburger()">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
     </nav>
     <!-- Navbar End -->
+
+    <!-- Hamburger Menu Start -->
+    <div class="hamburger-container" id="hamburger-container">
+      <a href="index.html" class="active">Home</a>
+      <a href="add-project.html">My Project</a>
+      <a href="testimonials.html" class="active">Testimonials</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <!-- Hamburger Menu End -->
 
     <!-- Container Start -->
     <div class="container">
@@ -108,6 +125,6 @@
     </footer>
     <!-- Footer End -->
 
-    <script src="js/try.js"></script>
+    <script src="js/navbar.js"></script>
   </body>
 </html>

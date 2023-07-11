@@ -29,6 +29,10 @@ html::-webkit-scrollbar-thumb {
   border-radius: 5rem;
 }
 
+.container {
+  margin: 5%;
+}
+
 /* Navbar */
 nav {
   display: flex;
@@ -133,63 +137,96 @@ ul li a:hover {
   color: #fff;
 }
 
-/* Form */
-.contact-form {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 50px;
-}
-
-form {
-  padding: 40px 50px;
-  background-color: #ffffff;
-  width: 600px;
-  border-radius: 10px;
-  border: 1px solid #f2f2f2;
-  box-shadow: 0 0 5px gray;
-}
-
-.form-detail {
-  margin-bottom: 12px;
-  display: flex;
-  flex-direction: column;
-}
-
-form div label {
-  font-weight: 500;
-}
-
-input,
-select,
-textarea {
-  background-color: #ffffff;
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  border-radius: 5px;
-  border: 1px solid #dbdbdb;
-  box-shadow: 0 0 3px #dbdbdb;
-}
-
-.btn {
-  display: flex;
-  justify-content: end;
-  margin-top: 40px;
-}
-
-.btn button {
-  padding: 8px 25px;
-  border: none;
-  border-radius: 10px;
+/* Testimonials */
+/* Rating Star */
+.rating-group a {
+  width: 40px;
   background-color: #99cc4c;
   color: #fff;
-  cursor: pointer;
+  margin-right: 5px;
+  border-radius: 7px;
+  text-align: center;
+  padding: 5px 0;
 }
 
-.btn button:hover {
-  transition: 0.2s;
+.rating-group a:hover {
   background-color: #83b735;
+}
+
+/* Testimonials Card */
+
+.btn {
+  padding: 5px 20px;
+  background-color: #99cc4c;
+  color: #fff;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background-color: #83b735;
+}
+
+.testimonials {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, auto));
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 0 5%;
+}
+
+.project-card {
+  background: rgb(255, 255, 255);
+  box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  border-radius: 0.5rem;
+}
+
+.project-card-img {
+  width: 100%;
+  height: 200px;
+  object-fit: initial;
+  object-position: center;
+  border-radius: 0.5rem;
+}
+
+.project-card-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: rgb(0, 0, 0);
+  /* To Remain Title In 2 lines*/
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.project-card-duration {
+  color: #5d5d5d;
+  font-size: 14px;
+}
+
+.project-card-description {
+  font-size: 0.9rem;
+  line-height: 1.5rem;
+  margin-top: 20px;
+  /* To Remain Description In 3 lines*/
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+.project-card-app {
+  margin: 20px 0 20px;
+}
+
+.project-card-btn {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
 }
 
 /* Footer */
@@ -210,12 +247,6 @@ footer p {
 
 /* Making Responsive */
 @media only screen and (max-width: 768px) {
-  form {
-    width: 100%;
-    margin-left: 10%;
-    margin-right: 10%;
-  }
-
   .collapse-item {
     display: none;
   }
@@ -225,6 +256,6 @@ footer p {
   }
 
   /* .hamburger-container {
-    display: flex;
-  } */
+      display: flex;
+    } */
 }
