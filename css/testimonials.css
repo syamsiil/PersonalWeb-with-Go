@@ -30,7 +30,7 @@ html::-webkit-scrollbar-thumb {
 }
 
 .container {
-  margin: 5%;
+  margin: 50px 5%;
 }
 
 /* Navbar */
@@ -139,7 +139,7 @@ ul li a:hover {
 
 /* Testimonials */
 /* Rating Star */
-.rating-group a {
+.rating-group button {
   width: 40px;
   background-color: #99cc4c;
   color: #fff;
@@ -147,10 +147,13 @@ ul li a:hover {
   border-radius: 7px;
   text-align: center;
   padding: 5px 0;
+  border: none;
+  cursor: pointer;
 }
 
-.rating-group a:hover {
+.rating-group button:hover {
   background-color: #83b735;
+  transition: 0.5s;
 }
 
 /* Testimonials Card */
@@ -192,24 +195,8 @@ ul li a:hover {
   border-radius: 0.5rem;
 }
 
-.project-card-title {
-  font-size: 20px;
-  font-weight: 600;
-  color: rgb(0, 0, 0);
-  /* To Remain Title In 2 lines*/
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
-}
-
-.project-card-duration {
-  color: #5d5d5d;
-  font-size: 14px;
-}
-
 .project-card-description {
-  font-size: 0.9rem;
+  font-size: 14px;
   line-height: 1.5rem;
   margin-top: 20px;
   /* To Remain Description In 3 lines*/
@@ -217,16 +204,6 @@ ul li a:hover {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   overflow: hidden;
-}
-
-.project-card-app {
-  margin: 20px 0 20px;
-}
-
-.project-card-btn {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 5px;
 }
 
 /* Footer */
