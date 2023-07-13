@@ -7,12 +7,12 @@
 // Encapsulation
 
 // Step
-// Make a Testimonial Class
+// create a Testimonial Class
 // Add variabel quote and img
 // Add constructor
 // Add get
 // Add get for testimonial html
-// Make Testimonial data container / array of object type
+// create Testimonial data container / array of object type
 
 // THIS IS OOP
 // class Testimonial {
@@ -114,11 +114,11 @@
 
 // =====================================================================
 // THIS IS HOF RATING
-// Step to make rating system
-// Make Variable for Testimonial Container Data Array of object and fill dummy datas
-// Make allTestimonials function with use foreach
-// Make filteredTestimonial function, in the function make a varible testimonialfiltered for hold the data after use hof filter
-// Make a conditional function for filter rating by star with use foreach
+// Step to create rating system
+// Create Variable for Testimonial Container Data Array of object and fill dummy datas
+// Create allTestimonials function with use foreach
+// Create filteredTestimonial function, in the function create a varible testimonialfiltered for hold the data after use hof filter
+// Create a conditional function for filter rating by star with use foreach
 // Dont forget to get element with use document.getElementbyId(   )
 
 const testimonialData = [
