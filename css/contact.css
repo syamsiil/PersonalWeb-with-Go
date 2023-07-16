@@ -30,109 +30,13 @@ html::-webkit-scrollbar-thumb {
 }
 
 /* Navbar */
-nav {
-  display: flex;
-  justify-content: space-between;
-  padding: 0 5%;
-  height: 10vh;
-  align-items: center;
-  background-color: #f2f2f2;
-  font-size: 16px;
-}
-
-ul {
-  display: flex;
-  align-items: center;
-}
-ul li a {
-  margin-right: 20px;
-  color: #000;
-  font-weight: 400;
+.btn-nav:hover {
+  background-color: #83b735 !important;
 }
 
 ul li a:hover {
-  color: #83b735;
-  transition: 0.2s;
+  color: #83b735 !important;
 }
-
-.logo {
-  font-size: 32px;
-  color: #99cc4c;
-}
-
-.nav-right a {
-  padding: 7px 14px;
-  background-color: #99cc4c;
-  color: #fff;
-  border-radius: 10px;
-  font-weight: 400;
-}
-
-.nav-right a:hover {
-  background-color: #83b735;
-  transition: 0.2s;
-}
-
-.active {
-  color: #000;
-  font-weight: 600;
-}
-
-/* Hamburger */
-.hamburger-btn {
-  display: none;
-}
-
-.hamburger-btn button {
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
-}
-
-.hamburger-btn i {
-  background-color: #99cc4c;
-  color: #fff;
-  padding: 7px;
-  border-radius: 10px;
-  font-size: 16px;
-  text-align: center;
-}
-
-.hamburger-btn i:hover {
-  background-color: #83b735;
-}
-
-.hamburger-container {
-  flex-direction: column;
-  align-items: center;
-  display: none;
-  background-color: #f2f2f2;
-}
-
-.hamburger-container a {
-  color: #000;
-  font-weight: 400;
-  margin-bottom: 12px;
-}
-
-.hamburger-container a:hover {
-  color: #83b735;
-}
-
-.hamburger-container .active {
-  background-color: #99cc4c;
-  color: #fff;
-  margin-bottom: 5px;
-  padding: 7px 14px;
-  border-radius: 15px;
-  font-weight: 400;
-}
-
-.hamburger-container .active:hover {
-  background-color: #83b735;
-  color: #fff;
-}
-
 /* Form */
 .contact-form {
   display: flex;
@@ -172,13 +76,13 @@ textarea {
   box-shadow: 0 0 3px #dbdbdb;
 }
 
-.btn {
+.btn-form {
   display: flex;
   justify-content: end;
   margin-top: 40px;
 }
 
-.btn button {
+.btn-form button {
   padding: 8px 25px;
   border: none;
   border-radius: 10px;
@@ -187,7 +91,7 @@ textarea {
   cursor: pointer;
 }
 
-.btn button:hover {
+.btn-form button:hover {
   transition: 0.2s;
   background-color: #83b735;
 }
