@@ -75,7 +75,7 @@
     <!-- Navbar End -->
 
     <!-- Contact Start -->
-    <div class="container">
+    <!-- <div class="container">
       <h2 style="margin: 50px auto; text-align: center; font-size: 32px">
         <span style="color: #83b735">Get</span> In Touch
       </h2>
@@ -135,8 +135,59 @@
           </div>
         </form>
       </div>
-    </div>
+    </div> -->
     <!-- Contact End -->
+
+    <div class="container">
+      <h2 style="margin: 50px auto; text-align: center; font-size: 32px">
+        <span style="color: #83b735">Get</span> In Touch
+      </h2>
+
+      <div class="contact-form" style="width: 500px; margin: auto">
+        <form>
+          <div class="mb-3">
+            <label for="input-name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="input-name" />
+          </div>
+          <div class="mb-3">
+            <label for="input-email" class="form-label">Email address</label>
+            <input
+              type="email"
+              class="form-control"
+              id="input-email"
+              aria-describedby="emailHelp"
+            />
+            <div id="emailHelp" class="form-text">
+              We'll never share your email with anyone else.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="input-number" class="form-label">Phone Number</label>
+            <input type="number" class="form-control" id="input-number" />
+          </div>
+          <div class="mb-3">
+            <label for="input-subject" class="form-label">Subject</label>
+            <select id="input-subject" class="form-control">
+              <option value="" hidden>Select</option>
+              <option>Front End</option>
+              <option>Back End</option>
+              <option>Fullstack</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="input-message" class="form-label">Message</label>
+            <textarea
+              name="input-message"
+              id="input-message"
+              class="form-control"
+            ></textarea>
+          </div>
+          <button type="submit" class="btn btn-submit" onclick="submitData()">
+            Submit
+          </button>
+        </form>
+      </div>
+    </div>
 
     <!-- Footer Start -->
     <footer class="copyright">
