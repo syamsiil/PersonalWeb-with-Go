@@ -137,8 +137,8 @@ function renderCard() {
           </div>
 
           <div class="project-card-btn">
-            <button class="btn">Edit</button>
-            <button class="btn">Delete</button>
+            <button class="btn-project">Edit</button>
+            <button class="btn-project">Delete</button>
           </div>
         </div>`;
   }
