@@ -3,11 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Testimonials</title>
+    <title>My Project</title>
+
     <link rel="icon" href="public/images/logo3.png" />
 
     <!-- Link To CSS -->
-    <link rel="stylesheet" href="public/css/testimonials.css" />
+    <link rel="stylesheet" href="public/css/add-project.css" />
 
     <!-- Link To Bootstrap -->
     <link
@@ -53,10 +54,10 @@
               <a class="nav-link" aria-current="page" href="/">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="project">My Project</a>
+              <a class="nav-link active" href="project">My Project</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" href="testimonials">Testimonials</a>
+              <a class="nav-link" href="testimonials">Testimonials</a>
             </li>
           </ul>
 
@@ -74,65 +75,43 @@
     </nav>
     <!-- Navbar End -->
 
-    <!-- Testimonials Start -->
-    <section class="container" id="container">
-      <h2 style="margin: 50px auto 20px; text-align: center; font-size: 32px">
-        <span style="color: #83b735">My</span> Testimonials
+    <!-- List Project Start -->
+    <section id="project" style="background-color: #f3f3f3; padding: 50px 5%">
+      <h2 style="margin: 0 auto 50px; text-align: center; font-size: 32px">
+        <span style="color: #83b735">My</span> Project
       </h2>
-      <p
-        style="
-          font-size: 20px;
-          font-weight: 600;
-          text-align: center;
-          margin-bottom: 20px;
-        "
-      >
-        Rating By Star
-      </p>
 
-      <div
-        class="rating-group"
-        style="display: flex; justify-content: center; margin-bottom: 20px"
-      >
-        <button href="" onclick="allTestimonial()">All</button>
-        <button href="" onclick="filteredTestimonial(1)">
-          1<i class="fa-solid fa-star"></i>
-        </button>
-        <button href="" onclick="filteredTestimonial(2)">
-          2<i class="fa-solid fa-star"></i>
-        </button>
-        <button href="" onclick="filteredTestimonial(3)">
-          3<i class="fa-solid fa-star"></i>
-        </button>
-        <button href="" onclick="filteredTestimonial(4)">
-          4<i class="fa-solid fa-star"></i>
-        </button>
-        <button href="" onclick="filteredTestimonial(5)">
-          5<i class="fa-solid fa-star"></i>
-        </button>
+      <!-- Add Project Button -->
+      <div class="mb-4 text-center">
+        <a href="add-project" class="btn-project text-decoration-none"
+          >Add Project</a
+        >
       </div>
 
-      <div class="testimonials" id="testimonials">
-        <!-- Project Card 1 -->
-        <!-- <div class="project-card">
+      <div class="list-project" id="contents">
+        {{ range $index, $project := .Projects }}
+
+        <div class="project-card">
           <img
-            src="/public/images/Profile.jpg"
+            src="/public/images/post-1.jpg"
             alt=""
-            class="project-card-img"
+            class="project-card-img mb-2"
           />
+          <a href="" class="project-card-title">{{$project.ProjectName}}</a>
+          <p class="project-card-duration">{{$project.DistanceTime}} | Seeus</p>
+          <p class="project-card-description">{{$project.Description}}</p>
 
-          <p class="project-card-description">
-            App that used for Seeus student, it was deployed and can downloaded
-            on Appstore. Happy download.
-          </p>
+          <div class="project-card-app"></div>
 
-          <p style="font-weight: 500; margin-top: 15px; text-align: end">
-            Seeus
-          </p>
-        </div> -->
+          <div class="project-card-btn">
+            <button class="btn-project">Edit</button>
+            <button class="btn-project">Delete</button>
+          </div>
+        </div>
+        {{ end }}
       </div>
     </section>
-    <!-- Testimonials End -->
+    <!-- List Project End -->
 
     <!-- Footer Start -->
     <footer class="copyright">
@@ -147,10 +126,8 @@
       crossorigin="anonymous"
     ></script>
 
-    <!-- Link To JS -->
+    <!-- Script To JS -->
+    <script src="public/js/project.js"></script>
     <script src="public/js/navbar.js"></script>
-    <!-- <script src="js/testimonials.js"></script> -->
-    <script src="public/js/ajax.js"></script>
-    <!-- <script src="js/exerciseHOF&Callback/3.builtInHof.js"></script> -->
   </body>
 </html>

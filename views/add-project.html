@@ -51,10 +51,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="home">Home</a>
+              <a class="nav-link" aria-current="page" href="/">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" href="add-project">My Project</a>
+              <a class="nav-link active" href="project">My Project</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="testimonials">Testimonials</a>
@@ -84,10 +84,10 @@
       <!-- Form Add Project -->
       <div class="form-add-project" style="width: 500px; margin: 0 auto">
         <form
+          onsubmit="projectCard(event)"
           action="/add-project"
           method="POST"
           style="padding: 0 10%; margin-bottom: 50px"
-          onsubmit="projectCard(event)"
         >
           <!-- project name -->
           <div class="form-detail">
@@ -201,93 +201,6 @@
     </section>
     <!-- Add Project End -->
 
-    <!-- List Project Start -->
-    <section id="project" style="background-color: #f3f3f3; padding: 50px 5%">
-      <h2 style="margin: 0 auto 50px; text-align: center; font-size: 32px">
-        <span style="color: #83b735">My</span> Project
-      </h2>
-
-      <div class="list-project" id="contents">
-        <!-- Project Card 1 -->
-        <div class="project-card">
-          <img
-            src="/public/images/post-1.jpg"
-            alt=""
-            class="project-card-img"
-          />
-          <a href="" class="project-card-title">Seeus Mobile App</a>
-          <p class="project-card-duration">Duration: 1 Month</p>
-          <p class="project-card-description">
-            App that used for Seeus student, it was deployed and can downloaded
-            on Appstore. Happy download.
-          </p>
-
-          <div class="project-card-app">
-            <i class="fa-brands fa-node-js"></i>
-            <i class="fa-brands fa-react"></i>
-            <i class="fa-brands fa-js"></i>
-            <i class="fa-brands fa-html5"></i>
-          </div>
-
-          <div class="project-card-btn">
-            <button class="btn-project">Edit</button>
-            <button class="btn-project">Delete</button>
-          </div>
-        </div>
-        <!-- Project Card 2 -->
-        <div class="project-card">
-          <img
-            src="/public/images/post-2.jpg"
-            alt=""
-            class="project-card-img"
-          />
-          <a href="" class="project-card-title">Seeus Mobile App</a>
-          <p class="project-card-duration">Duration: 1 Month</p>
-          <p class="project-card-description">
-            App that used for Seeus student, it was deployed and can downloaded
-            on Appstore. Happy download.
-          </p>
-
-          <div class="project-card-app">
-            <i class="fa-brands fa-app-store-ios"></i>
-            <i class="fa-brands fa-github"></i>
-            <i class="fa-brands fa-discord"></i>
-          </div>
-
-          <div class="project-card-btn">
-            <button class="btn-project">Edit</button>
-            <button class="btn-project">Delete</button>
-          </div>
-        </div>
-        <!-- Project Card 3 -->
-        <div class="project-card">
-          <img
-            src="/public/images/post-3.jpg"
-            alt=""
-            class="project-card-img"
-          />
-          <a href="" class="project-card-title">Seeus Mobile App</a>
-          <p class="project-card-duration">Duration: 1 Month</p>
-          <p class="project-card-description">
-            App that used for Seeus student, it was deployed and can downloaded
-            on Appstore. Happy download.
-          </p>
-
-          <div class="project-card-app">
-            <i class="fa-brands fa-app-store-ios"></i>
-            <i class="fa-brands fa-github"></i>
-            <i class="fa-brands fa-discord"></i>
-          </div>
-
-          <div class="project-card-btn">
-            <button class="btn-project">Edit</button>
-            <button class="btn-project">Delete</button>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- List Project End -->
-
     <!-- Footer Start -->
     <footer class="copyright">
       <p>&#169; Seeus | All Right Reserved.</p>
@@ -302,7 +215,7 @@
     ></script>
 
     <!-- Script To JS -->
-    <script src="public/js/project.js"></script>
+    <!-- <script src="public/js/project.js"></script> -->
     <script src="public/js/navbar.js"></script>
   </body>
 </html>
