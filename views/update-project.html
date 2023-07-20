@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update Project</title>
+
+    <link rel="icon" href="public/images/logo3.png" />
+
+    <!-- Link To CSS -->
+    <link rel="stylesheet" href="public/css/add-project.css" />
+
+    <!-- Link To Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+
+    <!-- Link CDN To Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid" style="padding: 0 5% !important">
+        <a class="navbar-brand logo" href="#"
+          ><i
+            class="fa-solid fa-leaf"
+            style="color: #99cc4c; font-size: 32px"
+          ></i
+        ></a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="project">My Project</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="testimonials">Testimonials</a>
+            </li>
+          </ul>
+
+          <button
+            class="btn btn-nav"
+            type="submit"
+            style="background-color: #99cc4c"
+          >
+            <a href="contact" style="text-decoration: none; color: #fff"
+              >Contact</a
+            >
+          </button>
+        </div>
+      </div>
+    </nav>
+    <!-- Navbar End -->
+
+    <!-- Add Project Start -->
+    <section class="add-project" id="add-project">
+      <h2 style="margin: 50px auto; text-align: center; font-size: 32px">
+        <span style="color: #83b735">Add</span> Project
+      </h2>
+
+      <!-- Form Add Project -->
+      <div class="form-add-project" style="width: 500px; margin: 0 auto">
+        <form
+          onsubmit="projectCard(event)"
+          action="/update-project"
+          method="POST"
+          style="padding: 0 10%; margin-bottom: 50px"
+        >
+          <!-- project name -->
+          <div class="form-detail">
+            <label for="input-project-name"> Project Name </label>
+            <input
+              type="text"
+              name="input-project-name"
+              id="input-project-name"
+              placeholder="What ur project? "
+            />
+          </div>
+
+          <!-- date -->
+          <div style="margin-bottom: 12px; display: flex">
+            <div class="start-date" style="margin-right: 10px">
+              <label for="input-start-date">Start Date</label>
+              <input
+                type="date"
+                name="input-start-date"
+                id="input-start-date"
+                style="flex: 50%; width: 100%"
+              />
+            </div>
+            <div class="end-date" style="flex: 50%; width: 100%">
+              <label for="input-end-date" style="margin-bottom: 7px"
+                >End Date</label
+              >
+              <input
+                type="date"
+                name="input-end-date"
+                id="input-end-date"
+                style="flex: 50%; width: 100%"
+              />
+            </div>
+          </div>
+
+          <!-- description -->
+          <div class="form-detail">
+            <label for="input-description">Description</label>
+            <textarea
+              name="input-description"
+              id="input-description"
+              placeholder="write ur project description here..."
+            ></textarea>
+          </div>
+
+          <!-- technologies -->
+          <label for="tecnologies">Technologies</label>
+          <div class="form-detail">
+            <div style="display: flex">
+              <div style="flex: 50%">
+                <input
+                  type="checkbox"
+                  name="input-nodejs"
+                  id="input-nodejs"
+                  class="multi-input"
+                />
+                <label class="label-skill" for="input-nodejs">Node Js</label>
+              </div>
+              <div style="flex: 50%">
+                <input
+                  type="checkbox"
+                  name="input-reactjs"
+                  id="input-reactjs"
+                  class="multi-input"
+                />
+                <label class="label-skill" for="input-reactjs">React Js</label>
+              </div>
+            </div>
+            <div style="display: flex">
+              <div style="flex: 50%">
+                <input
+                  type="checkbox"
+                  name="input-javascript"
+                  id="input-javascript"
+                  class="multi-input"
+                />
+                <label class="label-skill" for="input-javascript"
+                  >Javascript</label
+                >
+              </div>
+              <div style="flex: 50%">
+                <input
+                  type="checkbox"
+                  name="input-html5"
+                  id="input-html5"
+                  class="multi-input"
+                />
+                <label class="label-skill" for="input-html5">HTML5</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- upload image -->
+          <div class="form-detail">
+            <label for="input-image">Upload Image</label>
+            <input type="file" name="input-image" id="input-image" />
+          </div>
+
+          <div style="text-align: end">
+            <button
+              type="submit"
+              class="btn-project"
+              style="border-radius: 7px; margin-top: 15px; padding: 10px 20px"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+    <!-- Add Project End -->
+
+    <!-- Footer Start -->
+    <footer class="copyright">
+      <p>&#169; Seeus | All Right Reserved.</p>
+    </footer>
+    <!-- Footer End -->
+
+    <!-- Link To JS Bootstrap -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Script To JS -->
+    <!-- <script src="public/js/project.js"></script> -->
+    <script src="public/js/navbar.js"></script>
+  </body>
+</html>

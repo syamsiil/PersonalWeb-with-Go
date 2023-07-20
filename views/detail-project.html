@@ -10,6 +10,14 @@
     <!-- Link To CSS -->
     <link rel="stylesheet" href="/public/css/detail-project.css" />
 
+    <!-- Link To Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+
     <!-- Link CDN To Font Awesome -->
     <link
       rel="stylesheet"
@@ -21,42 +29,51 @@
   </head>
   <body>
     <!-- Navbar Start -->
-    <nav>
-      <div class="nav-left">
-        <ul>
-          <li>
-            <a href="" class="logo"><i class="fa-solid fa-leaf"></i></a>
-          </li>
-          <li><a href="/" class="collapse-item">Home</a></li>
-          <li>
-            <a href="project" class="active collapse-item">My Project</a>
-          </li>
-          <li>
-            <a href="testimonials" class="collapse-item">Testimonials</a>
-          </li>
-        </ul>
-      </div>
-      <div class="nav-right collapse-item">
-        <a href="contact">Contact</a>
-      </div>
-
-      <!-- Hamburger Button -->
-      <div class="hamburger-btn" id="hamburger-btn">
-        <button onclick="openHamburger()">
-          <i class="fa-solid fa-bars"></i>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid" style="padding: 0 5% !important">
+        <a class="navbar-brand logo" href="#"
+          ><i
+            class="fa-solid fa-leaf"
+            style="color: #99cc4c; font-size: 32px"
+          ></i
+        ></a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
         </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/project">My Project</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/testimonials">Testimonials</a>
+            </li>
+          </ul>
+
+          <button
+            class="btn btn-nav"
+            type="submit"
+            style="background-color: #99cc4c"
+          >
+            <a href="/contact" style="text-decoration: none; color: #fff"
+              >Contact</a
+            >
+          </button>
+        </div>
       </div>
     </nav>
     <!-- Navbar End -->
-
-    <!-- Hamburger Menu Start -->
-    <div class="hamburger-container" id="hamburger-container">
-      <a href="/">Home</a>
-      <a href="project" class="active">My Project</a>
-      <a href="testimonials" class="active">Testimonials</a>
-      <a href="contact">Contact</a>
-    </div>
-    <!-- Hamburger Menu End -->
 
     <!-- Detail Project Start -->
     <div class="container">
@@ -64,7 +81,7 @@
         <span style="color: #83b735">Dumbways</span> Web App
       </h2> -->
       <h2 class="title-project" style="margin: 50px auto; text-align: center">
-        {{.Title}}
+        {{.Project.ProjectName}}
       </h2>
 
       <div class="project" style="margin: 0 5%">
@@ -113,7 +130,9 @@
 
         <div class="project-description">
           <p>{{.Id}}</p>
-          <p style="text-align: justify; margin-top: 50px">{{.Content}}</p>
+          <p style="text-align: justify; margin-top: 50px">
+            {{.Project.Description}}
+          </p>
         </div>
       </div>
     </div>
@@ -124,6 +143,13 @@
       <p>&#169; Seeus | All Right Reserved.</p>
     </footer>
     <!-- Footer End -->
+
+    <!-- Link To JS Bootstrap -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"
+    ></script>
 
     <!-- Link To JS -->
     <script src="public/js/navbar.js"></script>

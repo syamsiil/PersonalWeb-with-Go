@@ -72,6 +72,8 @@ func main() {
 	e.GET("/detail-project/:id", detailProject)
 
 	e.POST("/add-project", addProject)
+	e.POST("/delete-project/:id", deleteProject)
+	e.POST("/update-project/:id", updateProject)
 
  
     e.Logger.Fatal(e.Start("localhost:5000"))
@@ -144,13 +146,34 @@ func detailProject (c echo.Context)error{
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	detailProject := map[string]interface{}{ // interface -> tipe data apapun
-		"Id":      id,
-		"Title":   "Dumbways ID memang keren",
-		"Content": "Dumbways ID adalah bootcamp terbaik sedunia seakhirat!",
+	idToInt, _ := strconv.Atoi(id)
+
+	detailProject := Project {}
+
+	for index, data := range dataProjects {
+		// index += 1
+		if index == idToInt { // 1 == 0
+			detailProject= Project{
+				ProjectName:    data.ProjectName,
+				StartDate:		data.StartDate,
+				EndDate: 		data.EndDate,
+				Description: 	data.Description,
+				DistanceTime: 	data.DistanceTime,
+				PostDate: 		"20/07/2023",
+				Javascript:     data.Javascript,
+				ReactJs:    	data.ReactJs,
+				NodeJs:			data.NodeJs,
+				Html5: 			data.Html5,
+			}
+		}
 	}
 
-	return tmpl.Execute(c.Response(),detailProject)
+	data := map[string]interface{}{ // interface -> tipe data apapun
+		"Id":   id,
+		"Project": detailProject,
+	}
+
+	return tmpl.Execute(c.Response(),data)
 }
 
 func calculateDuration(startDate, endDate string) string {
@@ -252,4 +275,38 @@ func addProject(c echo.Context)error{
 
 
 	return c.Redirect(http.StatusMovedPermanently, "/project") 
+}
+
+func deleteProject(c echo.Context) error {
+	id := c.Param("id")
+
+	idToInt, _ := strconv.Atoi(id)
+	// append
+
+	// slice -> 3 struct (+ 1 struct)
+
+	// slice = append(slice, structlagi)
+
+	// fmt.Println("persiapan delete index : ", id)
+	dataProjects = append(dataProjects[:idToInt], dataProjects[idToInt+1:]...)
+
+	return c.Redirect(http.StatusMovedPermanently, "/project")
+}
+
+func updateProject(c echo.Context)error{
+	id := c.Param("id")
+
+	tmpl, err := template.ParseFiles("views/detail-project.html")
+
+	if err !=nil{
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	detailProject := map[string]interface{}{ // interface -> tipe data apapun
+		"Id":      id,
+		"Title":   "Dumbways ID memang keren",
+		"Content": "Dumbways ID adalah bootcamp terbaik sedunia seakhirat!",
+	}
+
+	return tmpl.Execute(c.Response(),detailProject)
 }
