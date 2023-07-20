@@ -118,7 +118,7 @@ function renderCard() {
           <img src="${
             projectCardData[index].image
           }" alt="" class="project-card-img" />
-          <a href="detail-project.html" class="project-card-title">${
+          <a href="detail-project" class="project-card-title">${
             projectCardData[index].projectName
           }</a>
           <p class="project-card-duration">${convertDate(
@@ -132,7 +132,7 @@ function renderCard() {
           ${projectCardData[index].nodeJsIconDecide}
           ${projectCardData[index].reactJsIconDecide}
           ${projectCardData[index].javascriptIconDecide}
-          ${projectCardData[index].html5IconDecide}
+          ${projectCardData[index]5IconDecide}
          
           </div>
 

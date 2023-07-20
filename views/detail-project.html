@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Detail Project</title>
 
-    <link rel="icon" href="assets/images/logo3.png" />
+    <link rel="icon" href="/public/images/logo3.png" />
 
     <!-- Link To CSS -->
-    <link rel="stylesheet" href="css/detail-project.css" />
+    <link rel="stylesheet" href="/public/css/detail-project.css" />
 
     <!-- Link CDN To Font Awesome -->
     <link
@@ -27,19 +27,17 @@
           <li>
             <a href="" class="logo"><i class="fa-solid fa-leaf"></i></a>
           </li>
-          <li><a href="index.html" class="collapse-item">Home</a></li>
+          <li><a href="home" class="collapse-item">Home</a></li>
           <li>
-            <a href="add-project.html" class="active collapse-item"
-              >My Project</a
-            >
+            <a href="add-project" class="active collapse-item">My Project</a>
           </li>
           <li>
-            <a href="testimonials.html" class="collapse-item">Testimonials</a>
+            <a href="testimonials" class="collapse-item">Testimonials</a>
           </li>
         </ul>
       </div>
       <div class="nav-right collapse-item">
-        <a href="contact.html">Contact</a>
+        <a href="contact">Contact</a>
       </div>
 
       <!-- Hamburger Button -->
@@ -53,23 +51,26 @@
 
     <!-- Hamburger Menu Start -->
     <div class="hamburger-container" id="hamburger-container">
-      <a href="index.html">Home</a>
-      <a href="add-project.html" class="active">My Project</a>
-      <a href="testimonials.html" class="active">Testimonials</a>
-      <a href="contact.html">Contact</a>
+      <a href="home">Home</a>
+      <a href="add-project" class="active">My Project</a>
+      <a href="testimonials" class="active">Testimonials</a>
+      <a href="contact">Contact</a>
     </div>
     <!-- Hamburger Menu End -->
 
     <!-- Detail Project Start -->
     <div class="container">
-      <h2 class="title-project" style="margin: 50px auto; text-align: center">
+      <!-- <h2 class="title-project" style="margin: 50px auto; text-align: center">
         <span style="color: #83b735">Dumbways</span> Web App
+      </h2> -->
+      <h2 class="title-project" style="margin: 50px auto; text-align: center">
+        {{.Title}}
       </h2>
 
       <div class="project" style="margin: 0 5%">
         <div class="project-about" style="display: flex">
           <div class="project-about-left" style="flex: 60%; margin-right: 50px">
-            <img src="assets/images/bghome1.jpg" alt="" style="width: 100%" />
+            <img src="/public/images/bghome1.jpg" alt="" style="width: 100%" />
           </div>
           <div class="project-about-right" style="flex: 40%">
             <div class="about-duration" style="margin-bottom: 30px">
@@ -111,26 +112,8 @@
         </div>
 
         <div class="project-description">
-          <p style="text-align: justify; margin-top: 50px">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi
-            eos libero dignissimos temporibus, facere, commodi distinctio
-            provident culpa pariatur et minus illum. Ducimus repellendus tenetur
-            mollitia architecto ratione enim numquam ab iste quibusdam quasi
-            dolore harum in, eligendi voluptates libero facilis reiciendis porro
-            vero ullam, dicta blanditiis necessitatibus! Rerum quae maxime totam
-            veniam dolor expedita reiciendis dolorem aspernatur nisi architecto
-            iusto modi nesciunt tempora animi, veritatis, eum ut harum fuga
-            officia. Animi, aperiam. Iusto atque iste cumque ipsa, ut, corrupti
-            eveniet praesentium consequatur error sint eos deleniti. Laudantium
-            odit quo unde reprehenderit possimus porro, accusamus fugit minus
-            iusto aliquid aperiam eos quas doloremque fuga sed recusandae rerum
-            quos esse exercitationem debitis facere. Saepe minus possimus
-            asperiores necessitatibus magnam laudantium omnis doloremque, velit
-            id, maxime beatae sed, delectus alias corporis voluptatum harum
-            voluptates nam at cupiditate libero. Fuga debitis asperiores ad,
-            blanditiis, aliquid facere cupiditate quibusdam a atque dolores
-            voluptate odio?
-          </p>
+          <p>{{.Id}}</p>
+          <p style="text-align: justify; margin-top: 50px">{{.Content}}</p>
         </div>
       </div>
     </div>
@@ -143,6 +126,6 @@
     <!-- Footer End -->
 
     <!-- Link To JS -->
-    <script src="js/navbar.js"></script>
+    <script src="public/js/navbar.js"></script>
   </body>
 </html>
