@@ -132,7 +132,7 @@ function renderCard() {
           ${projectCardData[index].nodeJsIconDecide}
           ${projectCardData[index].reactJsIconDecide}
           ${projectCardData[index].javascriptIconDecide}
-          ${projectCardData[index]5IconDecide}
+          ${projectCardData[index].html5IconDecide}
          
           </div>
 
