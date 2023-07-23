@@ -1,4 +1,4 @@
-package main
+package main //must exist for running the main or main file
 
 import (
 	"fmt"
@@ -10,6 +10,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// create a struct
 type Project struct {
 	Id				int
 	ProjectName 	string
@@ -27,7 +28,8 @@ type Project struct {
 }
 
 
-// Data - data yang ditampung, yang kemudian data yang diisi harus sesuai dengan tipe data yang telah dibangun pada struct 
+// data that is accommodated, which then the filled data must match the data type that has been built in struct
+// must capital struct for global access 
 var dataProjects = [] Project{
 	{
 		ProjectName:    "Design Web Apps 2023",
@@ -58,11 +60,12 @@ var dataProjects = [] Project{
 func main() {
     e := echo.New()
 
-	e.Static("/public","public")
+	e.Static("/public","public") 
 
     // e = echo package
 	// GET =  run the method
 	// "/" = endpoint/routing ("localhost:5000 , ex. "/home")
+	// localhost for running server 
 	// helloWorld = function that will run if the route are opened
     e.GET("/hello", helloWorld)
 	e.GET("/", home)
@@ -86,13 +89,13 @@ func helloWorld(c echo.Context)error {
 }
 
 func home (c echo.Context)error{
-	tmpl, err := template.ParseFiles("views/index.html")
+	tmpl, err := template.ParseFiles("views/index.html") //for parsing files
 
 	if err !=nil{
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	return tmpl.Execute(c.Response(),nil)
+	return tmpl.Execute(c.Response(),nil) 
 }
 
 func contact (c echo.Context)error{
@@ -178,10 +181,10 @@ func detailProject (c echo.Context)error{
 }
 
 func calculateDuration(startDate, endDate string) string {
-	startTime, _ := time.Parse("2006-01-02", startDate)
+	startTime, _ := time.Parse("2006-01-02", startDate) // converting date to time.Time 
 	endTime, _ := time.Parse("2006-01-02", endDate)
 
-	durationTime := int(endTime.Sub(startTime).Hours())
+	durationTime := int(endTime.Sub(startTime).Hours()) // making to milliseconds
 	durationDays := durationTime / 24
 	durationWeeks := durationDays / 7
 	durationMonths := durationWeeks / 4
@@ -190,22 +193,22 @@ func calculateDuration(startDate, endDate string) string {
 	var duration string
 
 	if durationYears > 1 {
-		duration = strconv.Itoa(durationYears) + " years"
+		duration = strconv.Itoa(durationYears) + " years" //if year more than 1  
 	} else if durationYears > 0 {
 		duration = strconv.Itoa(durationYears) + " year"
 	} else {
 		if durationMonths > 1 {
-			duration = strconv.Itoa(durationMonths) + " months"
+			duration = strconv.Itoa(durationMonths) + " months" //if month more than 1
 		} else if durationMonths > 0 {
 			duration = strconv.Itoa(durationMonths) + " month"
 		} else {
 			if durationWeeks > 1 {
-				duration = strconv.Itoa(durationWeeks) + " weeks"
+				duration = strconv.Itoa(durationWeeks) + " weeks" //if week more than 1
 			} else if durationWeeks > 0 {
 				duration = strconv.Itoa(durationWeeks) + " week"
 			} else {
 				if durationDays > 1 {
-					duration = strconv.Itoa(durationDays) + " days"
+					duration = strconv.Itoa(durationDays) + " days" //if days more than 1
 				} else {
 					duration = strconv.Itoa(durationDays) + " day"
 				}
@@ -217,14 +220,14 @@ func calculateDuration(startDate, endDate string) string {
 }
 
 func addProject(c echo.Context)error{
-	projectName := c.FormValue("input-project-name")
+	projectName := c.FormValue("input-project-name") //get value from name 
 	startDate := c.FormValue("input-start-date")
 	endDate := c.FormValue("input-end-date")
 	description := c.FormValue("input-description")
 	distanceTime := calculateDuration(startDate, endDate)
 
 	var nodeJs bool
-	if c.FormValue("input-nodejs") == "on" {
+	if c.FormValue("input-nodejs") == "on" { //if checked get value on  
 		nodeJs = true
 	}
 	var reactJs bool
@@ -254,12 +257,9 @@ func addProject(c echo.Context)error{
 		
 	} 
 
-	// append berfungsi untuk menambahkan data newProject ke dalam slice dataProject
-	// mirip dengan fungsi push() pada javascript
-	// param1 = dimana datanya ditampung
-	// param2 = data apa yang akan ditampung
-	
-
+	// append for replace datas newProject to slice dataProject
+	// param1 = where the data is stored
+	// param2 = what data will be accommodated/store
 	dataProjects = append(dataProjects, newProject) // reassign / timpa
 
 	fmt.Println("title: ", projectName)
@@ -277,16 +277,10 @@ func addProject(c echo.Context)error{
 }
 
 func deleteProject(c echo.Context) error {
-	id := c.Param("id")
+	id := c.Param("id") //for get id
 
-	idToInt, _ := strconv.Atoi(id)
-	// append
-
-	// slice -> 3 struct (+ 1 struct)
-
-	// slice = append(slice, structlagi)
-
-	// fmt.Println("persiapan delete index : ", id)
+	idToInt, _ := strconv.Atoi(id) //converting id to int
+		
 	dataProjects = append(dataProjects[:idToInt], dataProjects[idToInt+1:]...)
 
 	return c.Redirect(http.StatusMovedPermanently, "/project")
@@ -306,8 +300,8 @@ func updateProject(c echo.Context)error{
 	detailProject := Project {}
 
 	for index, data := range dataProjects {
-		// index += 1
-		if index == idToInt { // 1 == 0
+		
+		if index == idToInt { 
 			detailProject= Project{
 				ProjectName:    data.ProjectName,
 				StartDate:		data.StartDate,
