@@ -94,11 +94,11 @@
               <h3>Duration</h3>
               <div class="about-duration-date" style="margin-bottom: 5px">
                 <i class="fa-regular fa-calendar"></i>
-                <span>30 June 2023 - 30 july 2023</span>
+                <span>{{.Project.StartDate}} - {{.Project.EndDate}} </span>
               </div>
               <div class="about-duration-month">
                 <i class="fa-regular fa-clock"></i>
-                <span>1 Month</span>
+                <span>{{.Project.DistanceTime}} </span>
               </div>
             </div>
 
@@ -106,22 +106,30 @@
             <div class="about-technologies-skill">
               <div style="display: flex">
                 <div class="skill-detail">
-                  <i class="fa-brands fa-react"></i>
-                  <p>React JS</p>
+                  <p>
+                    {{if .Project.ReactJs}}
+                    <i class="fa-brands fa-react"></i> React JS {{end}}
+                  </p>
                 </div>
                 <div class="skill-detail">
-                  <i class="fa-brands fa-node-js"></i>
-                  <p>Node JS</p>
+                  <p>
+                    {{if .Project.NodeJs}}
+                    <i class="fa-brands fa-node-js"></i> Node JS {{end}}
+                  </p>
                 </div>
               </div>
               <div style="display: flex">
                 <div class="skill-detail">
-                  <i class="fa-brands fa-square-js"></i>
-                  <p>Javascript</p>
+                  <p>
+                    {{if .Project.Javascript}}
+                    <i class="fa-brands fa-square-js"></i> Javascript {{end}}
+                  </p>
                 </div>
                 <div class="skill-detail">
-                  <i class="fa-brands fa-html5"></i>
-                  <p>HTML5</p>
+                  <p>
+                    {{if .Project.Html5}}
+                    <i class="fa-brands fa-html5"></i> HTML5 {{end}}
+                  </p>
                 </div>
               </div>
             </div>
@@ -129,7 +137,6 @@
         </div>
 
         <div class="project-description">
-          <p>{{.Id}}</p>
           <p style="text-align: justify; margin-top: 50px">
             {{.Project.Description}}
           </p>

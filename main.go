@@ -11,6 +11,7 @@ import (
 )
 
 type Project struct {
+	Id				int
 	ProjectName 	string
 	StartDate 		string
 	EndDate 		string
@@ -70,10 +71,11 @@ func main() {
 	e.GET("/project", project)
 	e.GET("/testimonials", testimonials)
 	e.GET("/detail-project/:id", detailProject)
+	e.GET("/update-project/:id", updateProject )
 
 	e.POST("/add-project", addProject)
 	e.POST("/delete-project/:id", deleteProject)
-	e.POST("/update-project/:id", updateProject)
+	e.POST("/update-project/:id", updatedProject)
 
  
     e.Logger.Fatal(e.Start("localhost:5000"))
@@ -159,7 +161,6 @@ func detailProject (c echo.Context)error{
 				EndDate: 		data.EndDate,
 				Description: 	data.Description,
 				DistanceTime: 	data.DistanceTime,
-				PostDate: 		"20/07/2023",
 				Javascript:     data.Javascript,
 				ReactJs:    	data.ReactJs,
 				NodeJs:			data.NodeJs,
@@ -222,25 +223,23 @@ func addProject(c echo.Context)error{
 	description := c.FormValue("input-description")
 	distanceTime := calculateDuration(startDate, endDate)
 
-	// var nodeJs bool
-	// if c.FormValue("input-nodejs") == "on" {
-	// 	nodeJs = true
-	// }
-	// var reactJs bool
-	// if c.FormValue("input-reactjs") == "on"  {
-	// 	reactJs = true
-	// }
-	// var javascript bool
-	// if c.FormValue("input-javascript") == "on" {
-	// javascript = true
+	var nodeJs bool
+	if c.FormValue("input-nodejs") == "on" {
+		nodeJs = true
+	}
+	var reactJs bool
+	if c.FormValue("input-reactjs") == "on"  {
+		reactJs = true
+	}
+	var javascript bool
+	if c.FormValue("input-javascript") == "on" {
+		javascript = true
 
-	// }
-	// var html5 bool
-	// if c.FormValue("input-html5") == "on" {
-	// 	html5 = true
-	// }else{
-	// 	c.JSON(http.StatusBadRequest, map[string]string{"message": "Test"})
-	// }
+	}
+	var html5 bool
+	if c.FormValue("input-html5") == "on" {
+		html5 = true
+	}
 
 	 newProject := Project{
 		ProjectName:    projectName,
@@ -248,10 +247,10 @@ func addProject(c echo.Context)error{
 		EndDate: 		endDate,
 		Description: 	description,
 		DistanceTime: 	distanceTime,
-		// NodeJs: 		nodeJs,		
-		// ReactJs: 		reactJs,		
-		// Javascript: 	javascript,		
-		// Html5:	 		html5,		
+		NodeJs: 		nodeJs,		
+		ReactJs: 		reactJs,		
+		Javascript: 	javascript,		
+		Html5:	 		html5,		
 		
 	} 
 
@@ -268,10 +267,10 @@ func addProject(c echo.Context)error{
 	fmt.Println("end date: ", endDate)
 	fmt.Println("description: ", description)
 	fmt.Println("distance time: ", distanceTime)
-	// fmt.Println("skill: ", nodeJs)
-	// fmt.Println("skill: ", reactJs)
-	// fmt.Println("skill: ", javascript)
-	// fmt.Println("skill: ", html5)
+	fmt.Println("skill: ", nodeJs)
+	fmt.Println("skill: ", reactJs)
+	fmt.Println("skill: ", javascript)
+	fmt.Println("skill: ", html5)
 
 
 	return c.Redirect(http.StatusMovedPermanently, "/project") 
@@ -296,17 +295,84 @@ func deleteProject(c echo.Context) error {
 func updateProject(c echo.Context)error{
 	id := c.Param("id")
 
-	tmpl, err := template.ParseFiles("views/detail-project.html")
+	tmpl, err := template.ParseFiles("views/update-project.html")
 
 	if err !=nil{
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	detailProject := map[string]interface{}{ // interface -> tipe data apapun
-		"Id":      id,
-		"Title":   "Dumbways ID memang keren",
-		"Content": "Dumbways ID adalah bootcamp terbaik sedunia seakhirat!",
+	idToInt, _ := strconv.Atoi(id)
+
+	detailProject := Project {}
+
+	for index, data := range dataProjects {
+		// index += 1
+		if index == idToInt { // 1 == 0
+			detailProject= Project{
+				ProjectName:    data.ProjectName,
+				StartDate:		data.StartDate,
+				EndDate: 		data.EndDate,
+				Description: 	data.Description,
+				DistanceTime: 	data.DistanceTime,
+				Javascript:     data.Javascript,
+				ReactJs:    	data.ReactJs,
+				NodeJs:			data.NodeJs,
+				Html5: 			data.Html5,
+			}
+		}
 	}
 
-	return tmpl.Execute(c.Response(),detailProject)
+	data := map[string]interface{}{ // interface -> tipe data apapun
+		"Id":   id,
+		"Project": detailProject,
+	}
+
+	return tmpl.Execute(c.Response(),data)
+}
+
+func updatedProject(c echo.Context)error{
+	// id := c.Param("id")
+	// idToInt, _ := strconv.Atoi(id)
+	id, _:= strconv.Atoi(c.Param("id"))
+
+	projectName := c.FormValue("input-project-name")
+	startDate := c.FormValue("input-start-date")
+	endDate := c.FormValue("input-end-date")
+	description := c.FormValue("input-description")
+	distanceTime := calculateDuration(startDate, endDate)
+
+	var nodeJs bool
+	if c.FormValue("input-nodejs") == "on" {
+		nodeJs = true
+	}
+	var reactJs bool
+	if c.FormValue("input-reactjs") == "on"  {
+		reactJs = true
+	}
+	var javascript bool
+	if c.FormValue("input-javascript") == "on" {
+		javascript = true
+
+	}
+	var html5 bool
+	if c.FormValue("input-html5") == "on" {
+		html5 = true
+	}
+
+	 updatedProject := Project{
+		ProjectName:    projectName,
+		StartDate:		startDate,
+		EndDate: 		endDate,
+		Description: 	description,
+		DistanceTime: 	distanceTime,
+		NodeJs: 		nodeJs,		
+		ReactJs: 		reactJs,		
+		Javascript: 	javascript,		
+		Html5:	 		html5,		
+		
+	} 
+
+	dataProjects[id] = updatedProject
+
+	return c.Redirect(http.StatusMovedPermanently, "/project")
 }

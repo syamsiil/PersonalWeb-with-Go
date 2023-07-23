@@ -102,10 +102,20 @@
           <p class="project-card-duration">{{$project.DistanceTime}} | Seeus</p>
           <p class="project-card-description">{{$project.Description}}</p>
 
-          <div class="project-card-app"></div>
+          <div class="project-card-app">
+            {{if $project.NodeJs}}
+            <i class="fa-brands fa-node-js"></i>
+            {{end}} {{if $project.ReactJs}}
+            <i class="fa-brands fa-react"></i>
+            {{end}} {{if $project.Javascript}}
+            <i class="fa-brands fa-square-js"></i>
+            {{end}} {{if $project.Html5}}
+            <i class="fa-brands fa-html5"></i>
+            {{end}}
+          </div>
 
           <div class="project-card-btn">
-            <form action="/update-project/{{$index}}">
+            <form action="/update-project/{{$index}}" method="GET">
               <button class="btn-project" style="width: 100%">Edit</button>
             </form>
             <form action="/delete-project/{{$index}}" method="post">
@@ -132,7 +142,7 @@
     ></script>
 
     <!-- Script To JS -->
-    <script src="public/js/project.js"></script>
+    <!-- <script src="public/js/project.js"></script> -->
     <script src="public/js/navbar.js"></script>
   </body>
 </html>

@@ -59,6 +59,11 @@ ul li a:hover {
   margin-right: 10px;
 }
 
+.skill-detail p {
+  align-items: center !important;
+  color: #83b735 !important;
+}
+
 /* Footer */
 footer {
   margin-top: 50px;
