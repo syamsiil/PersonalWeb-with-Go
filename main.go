@@ -11,6 +11,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// Struct is a collection of properties or methods wrapped as a new data type
 type Project struct {
 	Id				int
 	ProjectName 	string
@@ -26,9 +27,7 @@ type Project struct {
 	Image			string
 	Author			string
 }
-
-
-// Data - data yang ditampung, yang kemudian data yang diisi harus sesuai dengan tipe data yang telah dibangun pada struct 
+ 
 var dataProjects = [] Project{}
 // 	{
 // 		ProjectName:    "Design Web Apps 2023",
@@ -60,7 +59,7 @@ func main() {
 	e.Static("/public","public")
 
     // e = echo package
-	// GET =  run the method
+	// GET = the method
 	// "/" = endpoint/routing ("localhost:5000 , ex. "/home")
 	// helloWorld = function that will run if the route are opened
     e.GET("/hello", helloWorld)
@@ -136,8 +135,8 @@ func project (c echo.Context)error{
 			return c.JSON(http.StatusInternalServerError, err.Error())
 		}
 
-		
 		each.DistanceTime = calculateDuration(each.StartDate, each.EndDate)
+
 		if checkValue(each.Technologies, "reactjs") {
 			each.NodeJs = true
 		}
@@ -154,7 +153,8 @@ func project (c echo.Context)error{
 		resultProjects = append(resultProjects, each)
 	}
 
-	data := map[string]interface{}{
+	//Kode map[string]int maknanya adalah, tipe data map dengan key bertipe string dan value bertipe interface/any.
+	data := map[string]interface{}{ 
 		"Projects": resultProjects,
 	}
 
@@ -185,8 +185,8 @@ func detailProject (c echo.Context)error{
 	detailProject := Project {}
 
 	for index, data := range dataProjects {
-		// index += 1
-		if index == idToInt { // 1 == 0
+		
+		if index == idToInt { 
 			detailProject= Project{
 				ProjectName:    data.ProjectName,
 				StartDate:		data.StartDate,
@@ -201,7 +201,7 @@ func detailProject (c echo.Context)error{
 		}
 	}
 
-	data := map[string]interface{}{ // interface -> tipe data apapun
+	data := map[string]interface{}{ 
 		"Id":   id,
 		"Project": detailProject,
 	}
@@ -210,9 +210,7 @@ func detailProject (c echo.Context)error{
 }
 
 func calculateDuration(startDate time.Time, endDate time.Time ) string {
-	// startTime, _ := time.Parse("2006-01-02", startDate)
-	// endTime, _ := time.Parse("2006-01-02", endDate)
-
+	
 	durationTime := int(endDate.Sub(startDate).Hours())
 	durationDays := durationTime / 24
 	durationWeeks := durationDays / 7
@@ -253,8 +251,7 @@ func addProject(c echo.Context)error{
 	startDate := c.FormValue("input-start-date")
 	endDate := c.FormValue("input-end-date")
 	description := c.FormValue("input-description")
-	// distanceTime := calculateDuration(startDate, endDate)
-
+	
 	var nodeJs bool
 	if c.FormValue("input-nodejs") == "on" {
 		nodeJs = true
@@ -281,7 +278,6 @@ func addProject(c echo.Context)error{
 		StartDate:		startTime,
 		EndDate: 		endTime,
 		Description: 	description,
-		// DistanceTime: 	distanceTime,
 		NodeJs: 		nodeJs,		
 		ReactJs: 		reactJs,		
 		Javascript: 	javascript,		
@@ -289,15 +285,7 @@ func addProject(c echo.Context)error{
 		
 	} 
 
-
-
-	// append berfungsi untuk menambahkan data newProject ke dalam slice dataProject
-	// mirip dengan fungsi push() pada javascript
-	// param1 = dimana datanya ditampung
-	// param2 = data apa yang akan ditampung
-	
-
-	dataProjects = append(dataProjects, newProject) // reassign / timpa
+	dataProjects = append(dataProjects, newProject) // reassign 
 
 	// fmt.Println("title: ", projectName)
 	// fmt.Println("start date: ", startDate)
@@ -308,8 +296,6 @@ func addProject(c echo.Context)error{
 	// fmt.Println("skill: ", reactJs)
 	// fmt.Println("skill: ", javascript)
 	// fmt.Println("skill: ", html5)
-
-
 	return c.Redirect(http.StatusMovedPermanently, "/project") 
 }
 
@@ -317,13 +303,6 @@ func deleteProject(c echo.Context) error {
 	id := c.Param("id")
 
 	idToInt, _ := strconv.Atoi(id)
-	// append
-
-	// slice -> 3 struct (+ 1 struct)
-
-	// slice = append(slice, structlagi)
-
-	// fmt.Println("persiapan delete index : ", id)
 	dataProjects = append(dataProjects[:idToInt], dataProjects[idToInt+1:]...)
 
 	return c.Redirect(http.StatusMovedPermanently, "/project")
@@ -343,8 +322,8 @@ func updateProject(c echo.Context)error{
 	detailProject := Project {}
 
 	for index, data := range dataProjects {
-		// index += 1
-		if index == idToInt { // 1 == 0
+		
+		if index == idToInt { 
 			detailProject= Project{
 				ProjectName:    data.ProjectName,
 				StartDate:		data.StartDate,
@@ -368,15 +347,13 @@ func updateProject(c echo.Context)error{
 }
 
 func updatedProject(c echo.Context)error{
-	// id := c.Param("id")
-	// idToInt, _ := strconv.Atoi(id)
+	
 	id, _:= strconv.Atoi(c.Param("id"))
 
 	projectName := c.FormValue("input-project-name")
 	startDate := c.FormValue("input-start-date")
 	endDate := c.FormValue("input-end-date")
 	description := c.FormValue("input-description")
-	// distanceTime := calculateDuration(startDate, endDate)
 
 	var nodeJs bool
 	if c.FormValue("input-nodejs") == "on" {
@@ -404,12 +381,10 @@ func updatedProject(c echo.Context)error{
 		StartDate:		startTime,
 		EndDate: 		endTime,
 		Description: 	description,
-		// DistanceTime: 	distanceTime,
 		NodeJs: 		nodeJs,		
 		ReactJs: 		reactJs,		
 		Javascript: 	javascript,		
 		Html5:	 		html5,		
-		
 	} 
 
 	dataProjects[id] = updatedProject
