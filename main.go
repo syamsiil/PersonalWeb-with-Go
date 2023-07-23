@@ -10,7 +10,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// create a struct
+// Struct is a collection of properties or methods wrapped as a new data type
 type Project struct {
 	Id				int
 	ProjectName 	string
@@ -95,7 +95,7 @@ func home (c echo.Context)error{
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	return tmpl.Execute(c.Response(),nil) 
+	return tmpl.Execute(c.Response(),nil) //set nill if no datas to parsing 
 }
 
 func contact (c echo.Context)error{
@@ -125,11 +125,12 @@ func project (c echo.Context)error{
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	data := map[string]interface{}{
-		"Projects": dataProjects,
+	//Kode map[string]int maknanya adalah, tipe data map dengan key bertipe string dan value bertipe interface/any
+	data := map[string]interface{}{  
+		"Projects": dataProjects, //dataProjects is saved into the Project
 	}
 
-	return tmpl.Execute(c.Response(),data)
+	return tmpl.Execute(c.Response(),data) //return data
 }
 
 func testimonials (c echo.Context)error{
@@ -143,21 +144,21 @@ func testimonials (c echo.Context)error{
 }
 
 func detailProject (c echo.Context)error{
-	id := c.Param("id")
+	id := c.Param("id") //Get the id
 
-	tmpl, err := template.ParseFiles("views/detail-project.html")
+	tmpl, err := template.ParseFiles("views/detail-project.html") 
 
 	if err !=nil{
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	idToInt, _ := strconv.Atoi(id)
+	idToInt, _ := strconv.Atoi(id) //converting id/string to integer
 
-	detailProject := Project {}
+	detailProject := Project {} //creating datas with new struct
 
 	for index, data := range dataProjects {
-		// index += 1
-		if index == idToInt { // 1 == 0
+		
+		if index == idToInt { 
 			detailProject= Project{
 				ProjectName:    data.ProjectName,
 				StartDate:		data.StartDate,
@@ -172,7 +173,7 @@ func detailProject (c echo.Context)error{
 		}
 	}
 
-	data := map[string]interface{}{ // interface -> tipe data apapun
+	data := map[string]interface{}{ // interface -> any data
 		"Id":   id,
 		"Project": detailProject,
 	}
@@ -260,7 +261,7 @@ func addProject(c echo.Context)error{
 	// append for replace datas newProject to slice dataProject
 	// param1 = where the data is stored
 	// param2 = what data will be accommodated/store
-	dataProjects = append(dataProjects, newProject) // reassign / timpa
+	dataProjects = append(dataProjects, newProject) // reassign / replace
 
 	fmt.Println("title: ", projectName)
 	fmt.Println("start date: ", startDate)
@@ -287,7 +288,7 @@ func deleteProject(c echo.Context) error {
 }
 
 func updateProject(c echo.Context)error{
-	id := c.Param("id")
+	id := c.Param("id") // for get id
 
 	tmpl, err := template.ParseFiles("views/update-project.html")
 
@@ -295,11 +296,11 @@ func updateProject(c echo.Context)error{
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	idToInt, _ := strconv.Atoi(id)
+	idToInt, _ := strconv.Atoi(id) //converting id to int
 
-	detailProject := Project {}
+	detailProject := Project {} //create new data sets with using struct
 
-	for index, data := range dataProjects {
+	for index, data := range dataProjects { //looping datas
 		
 		if index == idToInt { 
 			detailProject= Project{
@@ -316,7 +317,7 @@ func updateProject(c echo.Context)error{
 		}
 	}
 
-	data := map[string]interface{}{ // interface -> tipe data apapun
+	data := map[string]interface{}{ // interface -> any datas
 		"Id":   id,
 		"Project": detailProject,
 	}
@@ -325,18 +326,16 @@ func updateProject(c echo.Context)error{
 }
 
 func updatedProject(c echo.Context)error{
-	// id := c.Param("id")
-	// idToInt, _ := strconv.Atoi(id)
-	id, _:= strconv.Atoi(c.Param("id"))
+	id, _:= strconv.Atoi(c.Param("id")) //converting id/string to int 
 
-	projectName := c.FormValue("input-project-name")
+	projectName := c.FormValue("input-project-name") //get value
 	startDate := c.FormValue("input-start-date")
 	endDate := c.FormValue("input-end-date")
 	description := c.FormValue("input-description")
 	distanceTime := calculateDuration(startDate, endDate)
 
 	var nodeJs bool
-	if c.FormValue("input-nodejs") == "on" {
+	if c.FormValue("input-nodejs") == "on" { //if checked get value on
 		nodeJs = true
 	}
 	var reactJs bool
@@ -353,7 +352,7 @@ func updatedProject(c echo.Context)error{
 		html5 = true
 	}
 
-	 updatedProject := Project{
+	 updatedProject := Project{ //create data sets with new struct
 		ProjectName:    projectName,
 		StartDate:		startDate,
 		EndDate: 		endDate,
