@@ -1,8 +1,9 @@
 package main
 
 import (
-	"fmt"
+	"context"
 	"net/http"
+	"personalWeb/connection"
 	"strconv"
 	"text/template"
 	"time"
@@ -13,11 +14,11 @@ import (
 type Project struct {
 	Id				int
 	ProjectName 	string
-	StartDate 		string
-	EndDate 		string
+	StartDate 		time.Time
+	EndDate 		time.Time
 	Description 	string
 	DistanceTime	string
-	PostDate 		string
+	Technologies 	[]string
 	NodeJs			bool
 	ReactJs			bool
 	Javascript		bool
@@ -28,34 +29,32 @@ type Project struct {
 
 
 // Data - data yang ditampung, yang kemudian data yang diisi harus sesuai dengan tipe data yang telah dibangun pada struct 
-var dataProjects = [] Project{
-	{
-		ProjectName:    "Design Web Apps 2023",
-		StartDate:		"2023-06-01",
-		EndDate: 		"2023-06-06",
-		Description: 	"Description",
-		DistanceTime: 	"1 month",
-		PostDate: 		"20/07/2023",
-		Javascript:     true,
-		ReactJs:    	true,
-		NodeJs:			true,
-		Html5: 			true,
-	},
-	{
-		ProjectName:    "Mobile Apps 2023",
-		StartDate:		"2023-06-01",
-		EndDate: 		"2023-06-06",
-		Description: 	"Description 2",
-		DistanceTime: 	"1 month",
-		PostDate: 		"20/07/2023",
-		Javascript:     true,
-		ReactJs:    	true,
-		NodeJs:			true,
-		Html5: 			true,
-	},
-} 
+var dataProjects = [] Project{}
+// 	{
+// 		ProjectName:    "Design Web Apps 2023",
+		
+// 		Description: 	"Description",
+// 		DistanceTime: 	"1 month",
+// 		Javascript:     true,
+// 		ReactJs:    	true,
+// 		NodeJs:			true,
+// 		Html5: 			true,
+// 	},
+// 	{
+// 		ProjectName:    "Mobile Apps 2023",
+		
+// 		Description: 	"Description 2",
+// 		DistanceTime: 	"1 month",
+// 		Javascript:     true,
+// 		ReactJs:    	true,
+// 		NodeJs:			true,
+// 		Html5: 			true,
+// 	},
+
 
 func main() {
+	connection.DatabaseConnect()
+
     e := echo.New()
 
 	e.Static("/public","public")
@@ -122,8 +121,41 @@ func project (c echo.Context)error{
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
+	databaseProjects, errProjects :=  connection.Conn.Query(context.Background(), "SELECT project_name, start_date, end_date, description, technologies, images FROM tb_project")
+
+	if errProjects != nil {
+		return c.JSON(http.StatusInternalServerError, errProjects.Error())
+	}
+
+	var resultProjects []Project
+	for databaseProjects.Next() {
+		var each = Project{}
+
+		err := databaseProjects.Scan(&each.ProjectName, &each.StartDate, &each.EndDate, &each.Description, &each.Technologies, &each.Image)
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, err.Error())
+		}
+
+		
+		each.DistanceTime = calculateDuration(each.StartDate, each.EndDate)
+		if checkValue(each.Technologies, "reactjs") {
+			each.NodeJs = true
+		}
+		if checkValue(each.Technologies, "nodejs") {
+			each.ReactJs = true
+		}
+		if checkValue(each.Technologies, "javascript") {
+			each.Javascript = true
+		}
+		if checkValue(each.Technologies, "html5") {
+			each.Html5 = true
+		}
+
+		resultProjects = append(resultProjects, each)
+	}
+
 	data := map[string]interface{}{
-		"Projects": dataProjects,
+		"Projects": resultProjects,
 	}
 
 	return tmpl.Execute(c.Response(),data)
@@ -177,11 +209,11 @@ func detailProject (c echo.Context)error{
 	return tmpl.Execute(c.Response(),data)
 }
 
-func calculateDuration(startDate, endDate string) string {
-	startTime, _ := time.Parse("2006-01-02", startDate)
-	endTime, _ := time.Parse("2006-01-02", endDate)
+func calculateDuration(startDate time.Time, endDate time.Time ) string {
+	// startTime, _ := time.Parse("2006-01-02", startDate)
+	// endTime, _ := time.Parse("2006-01-02", endDate)
 
-	durationTime := int(endTime.Sub(startTime).Hours())
+	durationTime := int(endDate.Sub(startDate).Hours())
 	durationDays := durationTime / 24
 	durationWeeks := durationDays / 7
 	durationMonths := durationWeeks / 4
@@ -221,7 +253,7 @@ func addProject(c echo.Context)error{
 	startDate := c.FormValue("input-start-date")
 	endDate := c.FormValue("input-end-date")
 	description := c.FormValue("input-description")
-	distanceTime := calculateDuration(startDate, endDate)
+	// distanceTime := calculateDuration(startDate, endDate)
 
 	var nodeJs bool
 	if c.FormValue("input-nodejs") == "on" {
@@ -241,18 +273,23 @@ func addProject(c echo.Context)error{
 		html5 = true
 	}
 
+	startTime, _ := time.Parse("2006-01-02", startDate)
+	endTime, _ := time.Parse("2006-01-02", endDate)
+
 	 newProject := Project{
 		ProjectName:    projectName,
-		StartDate:		startDate,
-		EndDate: 		endDate,
+		StartDate:		startTime,
+		EndDate: 		endTime,
 		Description: 	description,
-		DistanceTime: 	distanceTime,
+		// DistanceTime: 	distanceTime,
 		NodeJs: 		nodeJs,		
 		ReactJs: 		reactJs,		
 		Javascript: 	javascript,		
 		Html5:	 		html5,		
 		
 	} 
+
+
 
 	// append berfungsi untuk menambahkan data newProject ke dalam slice dataProject
 	// mirip dengan fungsi push() pada javascript
@@ -262,15 +299,15 @@ func addProject(c echo.Context)error{
 
 	dataProjects = append(dataProjects, newProject) // reassign / timpa
 
-	fmt.Println("title: ", projectName)
-	fmt.Println("start date: ", startDate)
-	fmt.Println("end date: ", endDate)
-	fmt.Println("description: ", description)
-	fmt.Println("distance time: ", distanceTime)
-	fmt.Println("skill: ", nodeJs)
-	fmt.Println("skill: ", reactJs)
-	fmt.Println("skill: ", javascript)
-	fmt.Println("skill: ", html5)
+	// fmt.Println("title: ", projectName)
+	// fmt.Println("start date: ", startDate)
+	// fmt.Println("end date: ", endDate)
+	// fmt.Println("description: ", description)
+	// fmt.Println("distance time: ", distanceTime)
+	// fmt.Println("skill: ", nodeJs)
+	// fmt.Println("skill: ", reactJs)
+	// fmt.Println("skill: ", javascript)
+	// fmt.Println("skill: ", html5)
 
 
 	return c.Redirect(http.StatusMovedPermanently, "/project") 
@@ -339,7 +376,7 @@ func updatedProject(c echo.Context)error{
 	startDate := c.FormValue("input-start-date")
 	endDate := c.FormValue("input-end-date")
 	description := c.FormValue("input-description")
-	distanceTime := calculateDuration(startDate, endDate)
+	// distanceTime := calculateDuration(startDate, endDate)
 
 	var nodeJs bool
 	if c.FormValue("input-nodejs") == "on" {
@@ -359,12 +396,15 @@ func updatedProject(c echo.Context)error{
 		html5 = true
 	}
 
+	startTime, _ := time.Parse("2006-01-02", startDate)
+	endTime, _ := time.Parse("2006-01-02", endDate)
+
 	 updatedProject := Project{
 		ProjectName:    projectName,
-		StartDate:		startDate,
-		EndDate: 		endDate,
+		StartDate:		startTime,
+		EndDate: 		endTime,
 		Description: 	description,
-		DistanceTime: 	distanceTime,
+		// DistanceTime: 	distanceTime,
 		NodeJs: 		nodeJs,		
 		ReactJs: 		reactJs,		
 		Javascript: 	javascript,		
@@ -375,4 +415,13 @@ func updatedProject(c echo.Context)error{
 	dataProjects[id] = updatedProject
 
 	return c.Redirect(http.StatusMovedPermanently, "/project")
+}
+
+func checkValue(slice []string, value string) bool {
+	for _, data := range slice {
+		if data == value {
+			return true
+		}
+	}
+	return false
 }
