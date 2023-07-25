@@ -89,14 +89,14 @@
       </div>
 
       <div class="list-project" id="contents">
-        {{ range $index, $project := .Projects }}
+        {{ range $project := .Projects }}
         <div class="project-card">
           <img
             src="/public/images/post-1.jpg"
             alt=""
             class="project-card-img mb-2"
           />
-          <a href="/detail-project/{{$index}}" class="project-card-title"
+          <a href="/detail-project/{{$project.Id}}" class="project-card-title"
             >{{$project.ProjectName}}</a
           >
           <p class="project-card-duration">{{$project.DistanceTime}} | Seeus</p>
@@ -115,10 +115,10 @@
           </div>
 
           <div class="project-card-btn">
-            <form action="/update-project/{{$index}}" method="GET">
+            <form action="/update-project/{{$project.Id}}" method="GET">
               <button class="btn-project" style="width: 100%">Edit</button>
             </form>
-            <form action="/delete-project/{{$index}}" method="post">
+            <form action="/delete-project/{{$project.Id}}" method="post">
               <button class="btn-project" style="width: 100%">Delete</button>
             </form>
           </div>

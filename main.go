@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"personalWeb/connection"
 	"strconv"
@@ -28,7 +29,7 @@ type Project struct {
 	Author			string
 }
  
-var dataProjects = [] Project{}
+// var dataProjects = [] Project{}
 // 	{
 // 		ProjectName:    "Design Web Apps 2023",
 		
@@ -120,7 +121,7 @@ func project (c echo.Context)error{
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	databaseProjects, errProjects :=  connection.Conn.Query(context.Background(), "SELECT project_name, start_date, end_date, description, technologies, images FROM tb_project")
+	databaseProjects, errProjects :=  connection.Conn.Query(context.Background(), "SELECT id, project_name, start_date, end_date, description, technologies, images FROM tb_project") //
 
 	if errProjects != nil {
 		return c.JSON(http.StatusInternalServerError, errProjects.Error())
@@ -130,17 +131,17 @@ func project (c echo.Context)error{
 	for databaseProjects.Next() {
 		var each = Project{}
 
-		err := databaseProjects.Scan(&each.ProjectName, &each.StartDate, &each.EndDate, &each.Description, &each.Technologies, &each.Image)
+		err := databaseProjects.Scan(&each.Id, &each.ProjectName, &each.StartDate, &each.EndDate, &each.Description, &each.Technologies, &each.Image)
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, err.Error())
 		}
 
 		each.DistanceTime = calculateDuration(each.StartDate, each.EndDate)
 
-		if checkValue(each.Technologies, "reactjs") {
+		if checkValue(each.Technologies, "nodejs") { //must macthing with value in html
 			each.NodeJs = true
 		}
-		if checkValue(each.Technologies, "nodejs") {
+		if checkValue(each.Technologies, "reactjs") {
 			each.ReactJs = true
 		}
 		if checkValue(each.Technologies, "javascript") {
@@ -149,6 +150,7 @@ func project (c echo.Context)error{
 		if checkValue(each.Technologies, "html5") {
 			each.Html5 = true
 		}
+
 
 		resultProjects = append(resultProjects, each)
 	}
@@ -184,26 +186,54 @@ func detailProject (c echo.Context)error{
 
 	detailProject := Project {}
 
-	for index, data := range dataProjects {
-		
-		if index == idToInt { 
-			detailProject= Project{
-				ProjectName:    data.ProjectName,
-				StartDate:		data.StartDate,
-				EndDate: 		data.EndDate,
-				Description: 	data.Description,
-				DistanceTime: 	data.DistanceTime,
-				Javascript:     data.Javascript,
-				ReactJs:    	data.ReactJs,
-				NodeJs:			data.NodeJs,
-				Html5: 			data.Html5,
-			}
-		}
+	// query get 1 data
+	errQuery := connection.Conn.QueryRow(context.Background(), "SELECT id, project_name, start_date, end_date, description, technologies, images FROM tb_project WHERE id=$1", idToInt).Scan(&detailProject.Id, &detailProject.ProjectName, &detailProject.StartDate, &detailProject.EndDate, &detailProject.Description, &detailProject.Technologies, &detailProject.Image)
+
+	fmt.Println("ini data detail project: ", errQuery)
+
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
+
+	
+	detailProject.DistanceTime = calculateDuration(detailProject.StartDate, detailProject.EndDate)
+	
+	if checkValue(detailProject.Technologies, "nodejs") { //must macthing with value in html
+		detailProject.NodeJs = true
+	}
+	if checkValue(detailProject.Technologies, "reactjs") {
+		detailProject.ReactJs = true
+	}
+	if checkValue(detailProject.Technologies, "javascript") {
+		detailProject.Javascript = true
+	}
+	if checkValue(detailProject.Technologies, "html5") {
+		detailProject.Html5 = true
+	}
+
+
+	// for index, data := range dataProjects {
+		
+	// 	if index == idToInt { 
+	// 		detailProject= Project{
+	// 			ProjectName:    data.ProjectName,
+	// 			StartDate:		data.StartDate,
+	// 			EndDate: 		data.EndDate,
+	// 			Description: 	data.Description,
+	// 			DistanceTime: 	data.DistanceTime,
+	// 			Javascript:     data.Javascript,
+	// 			ReactJs:    	data.ReactJs,
+	// 			NodeJs:			data.NodeJs,
+	// 			Html5: 			data.Html5,
+	// 		}
+	// 	}
+	// }
 
 	data := map[string]interface{}{ 
 		"Id":   id,
 		"Project": detailProject,
+		"StartDateString": detailProject.StartDate.Format("2006-01-02"),
+		"EndDateString":   detailProject.EndDate.Format("2006-01-02"),
 	}
 
 	return tmpl.Execute(c.Response(),data)
@@ -247,55 +277,67 @@ func calculateDuration(startDate time.Time, endDate time.Time ) string {
 }
 
 func addProject(c echo.Context)error{
+	
 	projectName := c.FormValue("input-project-name")
 	startDate := c.FormValue("input-start-date")
 	endDate := c.FormValue("input-end-date")
 	description := c.FormValue("input-description")
+	TechNodeJs := c.FormValue("input-nodejs")
+	TechReactJs := c.FormValue("input-reactjs")
+	TechJavascript := c.FormValue("input-javascript")
+	TechHtml5 := c.FormValue("input-html5")
 	
-	var nodeJs bool
-	if c.FormValue("input-nodejs") == "on" {
-		nodeJs = true
-	}
-	var reactJs bool
-	if c.FormValue("input-reactjs") == "on"  {
-		reactJs = true
-	}
-	var javascript bool
-	if c.FormValue("input-javascript") == "on" {
-		javascript = true
 
-	}
-	var html5 bool
-	if c.FormValue("input-html5") == "on" {
-		html5 = true
-	}
+	_, err := connection.Conn.Exec(context.Background(), "INSERT INTO tb_project (project_name, start_date, end_date, description, technologies[1], technologies[2], technologies[3], technologies[4], images) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)", projectName, startDate, endDate, description, TechNodeJs, TechReactJs, TechJavascript, TechHtml5, "default.jpg")
 
-	startTime, _ := time.Parse("2006-01-02", startDate)
-	endTime, _ := time.Parse("2006-01-02", endDate)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"Message ": err.Error()})
+	}
+	
+	// var nodeJs bool
+	// if c.FormValue("input-nodejs") == "on" {
+	// 	nodeJs = true
+	// }
+	// var reactJs bool
+	// if c.FormValue("input-reactjs") == "on"  {
+	// 	reactJs = true
+	// }
+	// var javascript bool
+	// if c.FormValue("input-javascript") == "on" {
+	// 	javascript = true
 
-	 newProject := Project{
-		ProjectName:    projectName,
-		StartDate:		startTime,
-		EndDate: 		endTime,
-		Description: 	description,
-		NodeJs: 		nodeJs,		
-		ReactJs: 		reactJs,		
-		Javascript: 	javascript,		
-		Html5:	 		html5,		
+	// }
+	// var html5 bool
+	// if c.FormValue("input-html5") == "on" {
+	// 	html5 = true
+	// }
+
+	// startTime, _ := time.Parse("2006-01-02", startDate)
+	// endTime, _ := time.Parse("2006-01-02", endDate)
+
+	//  newProject := Project{
+	// 	ProjectName:    projectName,
+	// 	StartDate:		startTime,
+	// 	EndDate: 		endTime,
+	// 	Description: 	description,
+	// 	NodeJs: 		nodeJs,		
+	// 	ReactJs: 		reactJs,		
+	// 	Javascript: 	javascript,		
+	// 	Html5:	 		html5,		
 		
-	} 
+	// } 
 
-	dataProjects = append(dataProjects, newProject) // reassign 
+	// dataProjects = append(dataProjects, newProject) // reassign 
 
-	// fmt.Println("title: ", projectName)
-	// fmt.Println("start date: ", startDate)
-	// fmt.Println("end date: ", endDate)
-	// fmt.Println("description: ", description)
+	fmt.Println("title: ", projectName)
+	fmt.Println("start date: ", startDate)
+	fmt.Println("end date: ", endDate)
+	fmt.Println("description: ", description)
 	// fmt.Println("distance time: ", distanceTime)
-	// fmt.Println("skill: ", nodeJs)
-	// fmt.Println("skill: ", reactJs)
-	// fmt.Println("skill: ", javascript)
-	// fmt.Println("skill: ", html5)
+	fmt.Println("skill: ", TechNodeJs)
+	fmt.Println("skill: ", TechReactJs)
+	fmt.Println("skill: ", TechJavascript)
+	fmt.Println("skill: ", TechHtml5)
 	return c.Redirect(http.StatusMovedPermanently, "/project") 
 }
 
@@ -303,7 +345,9 @@ func deleteProject(c echo.Context) error {
 	id := c.Param("id")
 
 	idToInt, _ := strconv.Atoi(id)
-	dataProjects = append(dataProjects[:idToInt], dataProjects[idToInt+1:]...)
+	// dataProjects = append(dataProjects[:idToInt], dataProjects[idToInt+1:]...)
+
+	connection.Conn.Exec(context.Background(), "DELETE FROM tb_project WHERE id=$1", idToInt)
 
 	return c.Redirect(http.StatusMovedPermanently, "/project")
 }
@@ -321,26 +365,54 @@ func updateProject(c echo.Context)error{
 
 	detailProject := Project {}
 
-	for index, data := range dataProjects {
-		
-		if index == idToInt { 
-			detailProject= Project{
-				ProjectName:    data.ProjectName,
-				StartDate:		data.StartDate,
-				EndDate: 		data.EndDate,
-				Description: 	data.Description,
-				DistanceTime: 	data.DistanceTime,
-				Javascript:     data.Javascript,
-				ReactJs:    	data.ReactJs,
-				NodeJs:			data.NodeJs,
-				Html5: 			data.Html5,
-			}
-		}
+	// query get 1 data
+	errQuery := connection.Conn.QueryRow(context.Background(), "SELECT id, project_name, start_date, end_date, description, technologies, images FROM tb_project WHERE id=$1", idToInt).Scan(&detailProject.Id, &detailProject.ProjectName, &detailProject.StartDate, &detailProject.EndDate, &detailProject.Description, &detailProject.Technologies, &detailProject.Image)
+
+	fmt.Println("ini data detail project: ", errQuery)
+
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	data := map[string]interface{}{ // interface -> tipe data apapun
+	
+	detailProject.DistanceTime = calculateDuration(detailProject.StartDate, detailProject.EndDate)
+	
+	if checkValue(detailProject.Technologies, "nodejs") { //must macthing with value in html
+		detailProject.NodeJs = true
+	}
+	if checkValue(detailProject.Technologies, "reactjs") {
+		detailProject.ReactJs = true
+	}
+	if checkValue(detailProject.Technologies, "javascript") {
+		detailProject.Javascript = true
+	}
+	if checkValue(detailProject.Technologies, "html5") {
+		detailProject.Html5 = true
+	}
+
+
+	// for index, data := range dataProjects {
+		
+	// 	if index == idToInt { 
+	// 		detailProject= Project{
+	// 			ProjectName:    data.ProjectName,
+	// 			StartDate:		data.StartDate,
+	// 			EndDate: 		data.EndDate,
+	// 			Description: 	data.Description,
+	// 			DistanceTime: 	data.DistanceTime,
+	// 			Javascript:     data.Javascript,
+	// 			ReactJs:    	data.ReactJs,
+	// 			NodeJs:			data.NodeJs,
+	// 			Html5: 			data.Html5,
+	// 		}
+	// 	}
+	// }
+
+	data := map[string]interface{}{ 
 		"Id":   id,
 		"Project": detailProject,
+		"StartDateString": detailProject.StartDate.Format("2006-01-02"),
+		"EndDateString":   detailProject.EndDate.Format("2006-01-02"),
 	}
 
 	return tmpl.Execute(c.Response(),data)
@@ -349,51 +421,61 @@ func updateProject(c echo.Context)error{
 func updatedProject(c echo.Context)error{
 	
 	id, _:= strconv.Atoi(c.Param("id"))
-
 	projectName := c.FormValue("input-project-name")
 	startDate := c.FormValue("input-start-date")
 	endDate := c.FormValue("input-end-date")
 	description := c.FormValue("input-description")
+	TechNodeJs := c.FormValue("input-nodejs")
+	TechReactJs := c.FormValue("input-reactjs")
+	TechJavascript := c.FormValue("input-javascript")
+	TechHtml5 := c.FormValue("input-html5")
+	
 
-	var nodeJs bool
-	if c.FormValue("input-nodejs") == "on" {
-		nodeJs = true
+	_, err := connection.Conn.Exec(context.Background(), "UPDATE tb_project SET project_name=$1, start_date=$2, end_date=$3, description=$4, technologies[1]=$5, technologies[2]=$6, technologies[3]=$7, technologies[4]=$8, images=$9 WHERE id=$10", projectName, startDate, endDate, description, TechNodeJs, TechReactJs, TechJavascript, TechHtml5, "default.jpg", id)
+
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"Message ": err.Error()})
 	}
-	var reactJs bool
-	if c.FormValue("input-reactjs") == "on"  {
-		reactJs = true
-	}
-	var javascript bool
-	if c.FormValue("input-javascript") == "on" {
-		javascript = true
+	
+	// var nodeJs bool
+	// if c.FormValue("input-nodejs") == "on" {
+	// 	nodeJs = true
+	// }
+	// var reactJs bool
+	// if c.FormValue("input-reactjs") == "on"  {
+	// 	reactJs = true
+	// }
+	// var javascript bool
+	// if c.FormValue("input-javascript") == "on" {
+	// 	javascript = true
 
-	}
-	var html5 bool
-	if c.FormValue("input-html5") == "on" {
-		html5 = true
-	}
+	// }
+	// var html5 bool
+	// if c.FormValue("input-html5") == "on" {
+	// 	html5 = true
+	// }
 
-	startTime, _ := time.Parse("2006-01-02", startDate)
-	endTime, _ := time.Parse("2006-01-02", endDate)
+	// startTime, _ := time.Parse("2006-01-02", startDate)
+	// endTime, _ := time.Parse("2006-01-02", endDate)
 
-	 updatedProject := Project{
-		ProjectName:    projectName,
-		StartDate:		startTime,
-		EndDate: 		endTime,
-		Description: 	description,
-		NodeJs: 		nodeJs,		
-		ReactJs: 		reactJs,		
-		Javascript: 	javascript,		
-		Html5:	 		html5,		
-	} 
+	//  updatedProject := Project{
+	// 	ProjectName:    projectName,
+	// 	StartDate:		startTime,
+	// 	EndDate: 		endTime,
+	// 	Description: 	description,
+	// 	NodeJs: 		nodeJs,		
+	// 	ReactJs: 		reactJs,		
+	// 	Javascript: 	javascript,		
+	// 	Html5:	 		html5,		
+	// } 
 
-	dataProjects[id] = updatedProject
+	// dataProjects[id] = updatedProject
 
 	return c.Redirect(http.StatusMovedPermanently, "/project")
 }
 
 func checkValue(slice []string, value string) bool {
-	for _, data := range slice {
+	for _, data := range slice { //
 		if data == value {
 			return true
 		}

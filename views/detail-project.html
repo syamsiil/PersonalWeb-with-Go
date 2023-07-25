@@ -94,7 +94,7 @@
               <h3>Duration</h3>
               <div class="about-duration-date" style="margin-bottom: 5px">
                 <i class="fa-regular fa-calendar"></i>
-                <span>{{.Project.StartDate}} - {{.Project.EndDate}} </span>
+                <span>{{.StartDateString}} - {{.EndDateString}} </span>
               </div>
               <div class="about-duration-month">
                 <i class="fa-regular fa-clock"></i>
@@ -140,6 +140,7 @@
           <p style="text-align: justify; margin-top: 50px">
             {{.Project.Description}}
           </p>
+          <p>ID : {{ .Id }}</p>
         </div>
       </div>
     </div>
