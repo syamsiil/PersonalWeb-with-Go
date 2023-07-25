@@ -12,7 +12,7 @@ import (
 var Conn *pgx.Conn
 
 func DatabaseConnect() {
-	// postgres://user:password@host:port/dbname
+	// postgres://user:password@host:port/dbname 
 	databaseURL := "postgres://postgres:aisyiLL21@localhost:5432/db_personal_web"
 	
 	var err error
