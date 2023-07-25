@@ -109,7 +109,7 @@
                 name="input-start-date"
                 id="input-start-date"
                 style="flex: 50%; width: 100%"
-                value=""
+                value="{{.StartDateString}}"
               />
             </div>
             <div class="end-date" style="flex: 50%; width: 100%">
@@ -121,7 +121,7 @@
                 name="input-end-date"
                 id="input-end-date"
                 style="flex: 50%; width: 100%"
-                value=""
+                value="{{.EndDateString}}"
               />
             </div>
           </div>
@@ -129,12 +129,9 @@
           <!-- description -->
           <div class="form-detail">
             <label for="input-description">Description</label>
-            <textarea
-              name="input-description"
-              id="input-description"
-              placeholder="write ur project description here..."
-              value=""
-            ></textarea>
+            <textarea name="input-description" id="input-description">
+{{.Project.Description}}</textarea
+            >
           </div>
 
           <!-- technologies -->
@@ -157,7 +154,7 @@
                   name="input-reactjs"
                   id="input-reactjs"
                   class="multi-input"
-                  value="nodejs"
+                  value="reactjs"
                 />
                 <label class="label-skill" for="input-reactjs">React Js</label>
               </div>
@@ -169,7 +166,7 @@
                   name="input-javascript"
                   id="input-javascript"
                   class="multi-input"
-                  value="Javascript"
+                  value="javascript"
                 />
                 <label class="label-skill" for="input-javascript"
                   >Javascript</label
@@ -181,7 +178,7 @@
                   name="input-html5"
                   id="input-html5"
                   class="multi-input"
-                  value="javascript"
+                  value="html5"
                 />
                 <label class="label-skill" for="input-html5">HTML5</label>
               </div>

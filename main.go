@@ -366,9 +366,9 @@ func updateProject(c echo.Context)error{
 	detailProject := Project {}
 
 	// query get 1 data
-	errQuery := connection.Conn.QueryRow(context.Background(), "SELECT id, project_name, start_date, end_date, description, technologies, images FROM tb_project WHERE id=$1", idToInt).Scan(&detailProject.Id, &detailProject.ProjectName, &detailProject.StartDate, &detailProject.EndDate, &detailProject.Description, &detailProject.Technologies, &detailProject.Image)
+	connection.Conn.QueryRow(context.Background(), "SELECT id, project_name, start_date, end_date, description, technologies, images FROM tb_project WHERE id=$1", idToInt).Scan(&detailProject.Id, &detailProject.ProjectName, &detailProject.StartDate, &detailProject.EndDate, &detailProject.Description, &detailProject.Technologies, &detailProject.Image)
 
-	fmt.Println("ini data detail project: ", errQuery)
+	// fmt.Println("ini data detail project: ", errQuery)
 
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
