@@ -3,11 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Contact</title>
+    <title>Register</title>
     <link rel="icon" href="public/images/logo3.png" />
 
     <!-- Link To CSS -->
-    <link rel="stylesheet" href="public/css/contact.css" />
+    <link rel="stylesheet" href="public/css/login-register.css" />
 
     <!-- Link To Bootstrap -->
     <link
@@ -86,124 +86,77 @@
     </nav>
     <!-- Navbar End -->
 
-    <!-- Contact Start -->
-    <!-- <div class="container">
-      <h2 style="margin: 50px auto; text-align: center; font-size: 32px">
-        <span style="color: #83b735">Get</span> In Touch
-      </h2>
+    <div
+      class="container-fluids d-flex align-items-center justify-content-center"
+      style="height: 80vh"
+    >
+      <!-- Form Register Start -->
+      <div class="container-form">
+        <h2 class="mb-4 text-center">Register</h2>
 
-      <div class="contact-form">
-        <form action="">
-          <div class="form-detail">
-            <label for="input-name">Project Name</label>
+        <form
+          style="width: 600px"
+          action="/register"
+          method="post"
+          autocomplete="off"
+        >
+          <div class="mb-3">
+            <label for="inputName" class="form-label">Name</label>
             <input
+              name="name"
               type="text"
-              name="input-name"
-              id="input-name"
-              placeholder="Your project name"
+              class="form-control"
+              id="inputName"
+              required
             />
-          </div>
-
-          <div class="form-detail">
-            <label for="input-email">Email</label>
-            <input
-              type="email"
-              name="input-email"
-              id="input-email"
-              placeholder="example@gmail.com "
-            />
-          </div>
-
-          <div class="form-detail">
-            <label for="input-number">Phone Number</label>
-            <input
-              type="email"
-              name="input-number"
-              id="input-number"
-              placeholder="Ex: 0821111222333"
-            />
-          </div>
-
-          <div class="form-detail">
-            <label for="input-subject">Subject</label>
-            <select id="input-subject">
-              <option value="" hidden>Select</option>
-              <option>Front End</option>
-              <option>Back End</option>
-              <option>Fullstack</option>
-            </select>
-          </div>
-
-          <div class="form-detail">
-            <label for="input-message">Your Message</label>
-            <textarea
-              name="input-message"
-              id="input-message"
-              placeholder="write your message here..."
-            ></textarea>
-          </div>
-          <div class="btn-form">
-            <button type="button" onclick="submitData()">Submit</button>
-          </div>
-        </form>
-      </div>
-    </div> -->
-    <!-- Contact End -->
-
-    <div class="container">
-      <h2 style="margin: 50px auto; text-align: center; font-size: 32px">
-        <span style="color: #83b735">Get</span> In Touch
-      </h2>
-
-      <div class="contact-form" style="margin: 50px 20%">
-        <form>
-          <div class="mb-3">
-            <label for="input-name" class="form-label">Name</label>
-            <input type="text" class="form-control" id="input-name" />
+            <div id="nameHelp" class="form-text">Your pretty name.</div>
           </div>
           <div class="mb-3">
-            <label for="input-email" class="form-label">Email address</label>
+            <label for="exampleInputEmail1" class="form-label"
+              >Email address</label
+            >
             <input
+              name="email"
               type="email"
               class="form-control"
-              id="input-email"
+              id="exampleInputEmail1"
               aria-describedby="emailHelp"
+              required
             />
             <div id="emailHelp" class="form-text">
               We'll never share your email with anyone else.
             </div>
           </div>
           <div class="mb-3">
-            <label for="input-number" class="form-label">Phone Number</label>
-            <input type="number" class="form-control" id="input-number" />
-          </div>
-          <div class="mb-3">
-            <label for="input-subject" class="form-label">Subject</label>
-            <select id="input-subject" class="form-control">
-              <option value="" hidden>Select</option>
-              <option>Front End</option>
-              <option>Back End</option>
-              <option>Fullstack</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="input-message" class="form-label">Message</label>
-            <textarea
-              name="input-message"
-              id="input-message"
+            <label for="exampleInputPassword1" class="form-label"
+              >Password</label
+            >
+            <input
+              name="password"
+              type="password"
               class="form-control"
-              placeholder="write your message here..."
-            ></textarea>
+              id="exampleInputPassword1"
+              required
+            />
           </div>
-          <button type="submit" class="btn btn-submit" onclick="submitData()">
-            Submit
+
+          <button
+            type="submit"
+            class="btn btn-nav"
+            style="background-color: #99cc4c; color: #fff"
+          >
+            Register
           </button>
         </form>
       </div>
     </div>
+    <!-- Form Register End -->
 
     <!-- Footer Start -->
-    <footer class="copyright">
+    <footer
+      class="copyright"
+      style="position: fixed; left: 0; bottom: 0; width: 100%"
+    >
       <p>&#169; Seeus | All Right Reserved.</p>
     </footer>
     <!-- Footer End -->
@@ -216,7 +169,5 @@
     ></script>
 
     <!-- Link To JS -->
-    <script src="public/js/contact.js"></script>
-    <script src="public/js/navbar.js"></script>
   </body>
 </html>

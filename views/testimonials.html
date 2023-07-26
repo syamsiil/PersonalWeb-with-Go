@@ -60,15 +60,27 @@
             </li>
           </ul>
 
-          <button
-            class="btn btn-nav"
-            type="submit"
-            style="background-color: #99cc4c"
-          >
-            <a href="contact" style="text-decoration: none; color: #fff"
-              >Contact</a
+          <form class="d-flex">
+            {{if .dataSession.IsLogin}}
+            <a class="nav-link me-3" href="# ">Halo, {{.dataSession.Name}}</a>
+            <a class="nav-link me-3" href="/logout " id="logout">Logout</a>
+            {{else}}
+            <a class="nav-link me-3" href="/form-register " id="register"
+              >Register</a
             >
-          </button>
+            <a class="nav-link me-3" href="/form-login " id="login">Login</a>
+            {{end}}
+
+            <button
+              class="btn btn-nav"
+              type="submit"
+              style="background-color: #99cc4c"
+            >
+              <a href="contact" style="text-decoration: none; color: #fff"
+                >Contact</a
+              >
+            </button>
+          </form>
         </div>
       </div>
     </nav>

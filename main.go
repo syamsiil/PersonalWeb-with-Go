@@ -3,13 +3,17 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
 	"personalWeb/connection"
 	"strconv"
 	"text/template"
 	"time"
 
+	"github.com/gorilla/sessions"
+	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
+	"golang.org/x/crypto/bcrypt"
 )
 
 // Struct is a collection of properties or methods wrapped as a new data type
@@ -29,33 +33,27 @@ type Project struct {
 	Author			string
 }
  
-// var dataProjects = [] Project{}
-// 	{
-// 		ProjectName:    "Design Web Apps 2023",
-		
-// 		Description: 	"Description",
-// 		DistanceTime: 	"1 month",
-// 		Javascript:     true,
-// 		ReactJs:    	true,
-// 		NodeJs:			true,
-// 		Html5: 			true,
-// 	},
-// 	{
-// 		ProjectName:    "Mobile Apps 2023",
-		
-// 		Description: 	"Description 2",
-// 		DistanceTime: 	"1 month",
-// 		Javascript:     true,
-// 		ReactJs:    	true,
-// 		NodeJs:			true,
-// 		Html5: 			true,
-// 	},
+type User struct {
+	Id      	 	int
+	Name     		string
+	Email    		string
+	HashedPassword 	string
+}
 
+
+type SessionData struct {
+	IsLogin bool
+	Name    string
+}
+
+var userData = SessionData{}
 
 func main() {
-	connection.DatabaseConnect()
-
     e := echo.New()
+	connection.DatabaseConnect()
+	
+	e.Use(session.Middleware(sessions.NewCookieStore([]byte("session"))))
+
 
 	e.Static("/public","public")
 
@@ -72,10 +70,18 @@ func main() {
 	e.GET("/detail-project/:id", detailProject)
 	e.GET("/update-project/:id", updateProject )
 
+	// Authentication
+	e.GET("/form-login", formLogin)
+	e.POST("/login", login)
+	e.GET("/logout", logout)
+
+	
+	e.GET("/form-register", formRegister)
+	e.POST("/register", register)
+
 	e.POST("/add-project", addProject)
 	e.POST("/delete-project/:id", deleteProject)
 	e.POST("/update-project/:id", updatedProject)
-
  
     e.Logger.Fatal(e.Start("localhost:5000"))
 }
@@ -91,7 +97,26 @@ func home (c echo.Context)error{
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	return tmpl.Execute(c.Response(),nil)
+	session, _ := session.Get("session", c)
+
+	if session.Values["isLogin"] != true {
+		userData.IsLogin = false
+	} else {
+		userData.IsLogin = session.Values["isLogin"].(bool)
+		userData.Name = session.Values["name"].(string)
+	}
+
+	dataSession := map[string]interface{}{
+		"dataSession": userData,
+		"FlashStatus":  session.Values["status"],
+		"FlashMessage": session.Values["message"],
+		"FlashName":    session.Values["name"],
+	}
+
+	delete(session.Values, "message")
+	session.Save(c.Request(), c.Response())
+
+	return tmpl.Execute(c.Response(), dataSession)
 }
 
 func contact (c echo.Context)error{
@@ -101,7 +126,20 @@ func contact (c echo.Context)error{
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	return tmpl.Execute(c.Response(),nil)
+	session, _ := session.Get("session", c)
+
+	if session.Values["isLogin"] != true {
+		userData.IsLogin = false
+	} else {
+		userData.IsLogin = session.Values["isLogin"].(bool)
+		userData.Name = session.Values["name"].(string)
+	}
+
+	dataSession := map[string]interface{}{
+		"dataSession": userData,
+	}
+
+	return tmpl.Execute(c.Response(), dataSession)
 }
 
 func formAddProject (c echo.Context)error{
@@ -111,7 +149,20 @@ func formAddProject (c echo.Context)error{
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	return tmpl.Execute(c.Response(),nil)
+	session, _ := session.Get("session", c)
+
+	if session.Values["isLogin"] != true {
+		userData.IsLogin = false
+	} else {
+		userData.IsLogin = session.Values["isLogin"].(bool)
+		userData.Name = session.Values["name"].(string)
+	}
+
+	dataSession := map[string]interface{}{
+		"dataSession": userData,
+	}
+
+	return tmpl.Execute(c.Response(), dataSession)
 }
 
 func project (c echo.Context)error{
@@ -151,16 +202,26 @@ func project (c echo.Context)error{
 			each.Html5 = true
 		}
 
-
 		resultProjects = append(resultProjects, each)
 	}
+		session, _ := session.Get("session", c)
+
+		projects := map[string]interface{}{
+			"Projects":     resultProjects,
+			"dataSession":  userData,
+			"FlashStatus":  session.Values["status"],
+			"FlashMessage": session.Values["message"],
+			"FlashName":    session.Values["name"],
+		}
+	
+		delete(session.Values, "message")
+		session.Save(c.Request(), c.Response())
+	
+		return tmpl.Execute(c.Response(), projects)
+	
 
 	//Kode map[string]int maknanya adalah, tipe data map dengan key bertipe string dan value bertipe interface/any.
-	data := map[string]interface{}{ 
-		"Projects": resultProjects,
-	}
-
-	return tmpl.Execute(c.Response(),data)
+	
 }
 
 func testimonials (c echo.Context)error{
@@ -170,7 +231,20 @@ func testimonials (c echo.Context)error{
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	return tmpl.Execute(c.Response(),nil)
+	session, _ := session.Get("session", c)
+
+	if session.Values["isLogin"] != true {
+		userData.IsLogin = false
+	} else {
+		userData.IsLogin = session.Values["isLogin"].(bool)
+		userData.Name = session.Values["name"].(string)
+	}
+
+	dataSession := map[string]interface{}{
+		"dataSession": userData,
+	}
+
+	return tmpl.Execute(c.Response(), dataSession)
 }
 
 func detailProject (c echo.Context)error{
@@ -211,23 +285,14 @@ func detailProject (c echo.Context)error{
 		detailProject.Html5 = true
 	}
 
+	session, _ := session.Get("session", c)
 
-	// for index, data := range dataProjects {
-		
-	// 	if index == idToInt { 
-	// 		detailProject= Project{
-	// 			ProjectName:    data.ProjectName,
-	// 			StartDate:		data.StartDate,
-	// 			EndDate: 		data.EndDate,
-	// 			Description: 	data.Description,
-	// 			DistanceTime: 	data.DistanceTime,
-	// 			Javascript:     data.Javascript,
-	// 			ReactJs:    	data.ReactJs,
-	// 			NodeJs:			data.NodeJs,
-	// 			Html5: 			data.Html5,
-	// 		}
-	// 	}
-	// }
+	if session.Values["isLogin"] != true {
+		userData.IsLogin = false
+	} else {
+		userData.IsLogin = session.Values["isLogin"].(bool)
+		userData.Name = session.Values["name"].(string)
+	}
 
 	data := map[string]interface{}{ 
 		"Id":   id,
@@ -293,42 +358,7 @@ func addProject(c echo.Context)error{
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"Message ": err.Error()})
 	}
-	
-	// var nodeJs bool
-	// if c.FormValue("input-nodejs") == "on" {
-	// 	nodeJs = true
-	// }
-	// var reactJs bool
-	// if c.FormValue("input-reactjs") == "on"  {
-	// 	reactJs = true
-	// }
-	// var javascript bool
-	// if c.FormValue("input-javascript") == "on" {
-	// 	javascript = true
-
-	// }
-	// var html5 bool
-	// if c.FormValue("input-html5") == "on" {
-	// 	html5 = true
-	// }
-
-	// startTime, _ := time.Parse("2006-01-02", startDate)
-	// endTime, _ := time.Parse("2006-01-02", endDate)
-
-	//  newProject := Project{
-	// 	ProjectName:    projectName,
-	// 	StartDate:		startTime,
-	// 	EndDate: 		endTime,
-	// 	Description: 	description,
-	// 	NodeJs: 		nodeJs,		
-	// 	ReactJs: 		reactJs,		
-	// 	Javascript: 	javascript,		
-	// 	Html5:	 		html5,		
 		
-	// } 
-
-	// dataProjects = append(dataProjects, newProject) // reassign 
-
 	fmt.Println("title: ", projectName)
 	fmt.Println("start date: ", startDate)
 	fmt.Println("end date: ", endDate)
@@ -481,4 +511,121 @@ func checkValue(slice []string, value string) bool {
 		}
 	}
 	return false
+}
+
+func formLogin (c echo.Context)error{
+	// bikin pengecekan
+	// ngambil dari session datanya, misalnya isLogin -> false
+	// sess, _ := session.Get("session", c)
+
+	// if sess.Values["isLogin"] != true {
+	// 	return c.Redirect(http.StatusMovedPermanently, "/")
+	// }
+	session, _ := session.Get("session", c)
+
+	messageFlash := map[string]interface{}{
+		"FlashStatus":  session.Values["status"],
+		"FlashMessage": session.Values["message"],
+	}
+
+	var tmpl, err = template.ParseFiles("views/login.html")
+
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	delete(session.Values, "status")
+	delete(session.Values, "message")
+	session.Save(c.Request(), c.Response())
+
+	return tmpl.Execute(c.Response(), messageFlash)
+}
+
+func formRegister (c echo.Context)error{
+	tmpl, err := template.ParseFiles("views/register.html")
+
+	if err !=nil{
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	return tmpl.Execute(c.Response(),nil)
+}
+
+// authentication and session
+
+func redirectWithMessage(c echo.Context, message string, status bool, redirectPath string) error {
+	sess, errSess := session.Get("session", c)
+
+	if errSess != nil {
+		return c.JSON(http.StatusInternalServerError, errSess.Error())
+	}
+
+	sess.Values["message"] = message
+	sess.Values["status"] = status
+	sess.Save(c.Request(), c.Response())
+	return c.Redirect(http.StatusMovedPermanently, redirectPath)
+}
+
+
+func register(c echo.Context) error {
+	err := c.Request().ParseForm()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	name := c.FormValue("name")
+	email := c.FormValue("email")
+	password := c.FormValue("password")
+
+	passwordHash, _ := bcrypt.GenerateFromPassword([]byte(password), 10)
+
+	_, err = connection.Conn.Exec(context.Background(), "INSERT INTO tb_user (name, email, password) VALUES ($1, $2, $3)", name, email, passwordHash)
+	if err != nil {
+		redirectWithMessage(c, "RegistrationFailed, please try again!", false, "/form-register")
+	}
+
+	return redirectWithMessage(c, "Registration Success", true, "/form-login")
+}
+
+func login(c echo.Context) error {
+	err := c.Request().ParseForm()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	email := c.FormValue("email")
+	password := c.FormValue("password")
+
+	var user = User{}
+
+	errEmail := connection.Conn.QueryRow(context.Background(), "SELECT * FROM tb_user WHERE email=$1", email).Scan(&user.Id, &user.Name, &user.Email, &user.HashedPassword)
+	errPass := bcrypt.CompareHashAndPassword([]byte(user.HashedPassword), []byte(password))
+
+	if errEmail != nil {
+		return redirectWithMessage(c, "Email wrong!", true, "/form-login")
+	}
+
+	if errPass != nil {
+		return redirectWithMessage(c, "Password wrong!", true, "/form-login")
+	}
+
+	session, _ := session.Get("session", c)
+	session.Options.MaxAge = 3600
+	session.Values["message"] = "login Success"
+	session.Values["status"] = true // show alert
+	session.Values["name"] = user.Name
+	session.Values["id"] = user.Id
+	session.Values["isLogin"] = true // access login
+	session.Save(c.Request(), c.Response())
+
+	return redirectWithMessage(c, "Login Succes", true, "/")
+}
+
+func logout(c echo.Context) error {
+	session, _ := session.Get("session", c)
+	session.Options.MaxAge = -1
+	session.Values["isLogin"] = false
+	session.Save(c.Request(), c.Response())
+
+	return c.Redirect(http.StatusTemporaryRedirect, "/")
 }

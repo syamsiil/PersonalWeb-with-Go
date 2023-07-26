@@ -110,6 +110,10 @@ span {
   transition: 0.2s;
 }
 
+form a {
+  align-items: center !important;
+}
+
 /* social media */
 .social-media {
   margin-top: 40px;
