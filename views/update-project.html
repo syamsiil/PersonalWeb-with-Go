@@ -97,10 +97,12 @@
       <div class="form-add-project" style="width: 500px; margin: 0 auto">
         <form
           onsubmit="projectCard(event)"
-          action="/update-project/{{.Id}}"
+          action="/updated-project"
           method="POST"
+          enctype="multipart/form-data"
           style="padding: 0 10%; margin-bottom: 50px"
         >
+          <input type="" value="{{.Id}}" name="id" id="id" />
           <!-- project name -->
           <div class="form-detail">
             <label for="input-project-name"> Project Name </label>

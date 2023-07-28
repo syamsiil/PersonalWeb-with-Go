@@ -62,8 +62,8 @@
           </ul>
 
           <form class="d-flex">
-            {{if .dataSession.IsLogin}}
-            <a class="nav-link me-3" href="# ">Halo, {{.dataSession.Name}}</a>
+            {{if .FlashStatus}}
+            <a class="nav-link me-3" href="# ">Halo, {{.FlashName}}</a>
             <a class="nav-link me-3" href="/logout " id="logout">Logout</a>
             {{else}}
             <a class="nav-link me-3" href="/form-register " id="register"
@@ -86,44 +86,6 @@
       </div>
     </nav>
     <!-- Navbar End -->
-
-    <!-- {{if .FlashMessage}}
-
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-      {{.FlashMessage}}
-      <button
-        type="button"
-        class="btn-close"
-        data-bs-dismiss="alert"
-        aria-label="Close"
-      ></button>
-    </div>
-    {{else}}
-    <div></div>
-    {{end}}
-
-    <div
-      style="margin-top: 50px; text-align: center"
-      id="containerbutton"
-      class="container-fluid"
-    >
-      {{if $.FlashStatus}}
-      <a
-        href="/FormProject"
-        style="
-          background-color: orangered;
-          padding: 10px 25px;
-          color: white;
-          text-decoration: none;
-          border-radius: 10px;
-        "
-        id="buttonkanan"
-        >Add Project</a
-      >
-      {{else}}
-      <div style="display: none"></div>
-      {{end}}
-    </div> -->
 
     <!-- List Project Start -->
     <section id="project" style="background-color: #f3f3f3; padding: 50px 5%">
@@ -170,7 +132,7 @@
 
           <div class="project-card-btn">
             {{if $.FlashStatus}}
-            <form action="/update-project/{{$project.Id}}" method="GET">
+            <form action="/form-update-project/{{$project.Id}}" method="GET">
               <button class="btn-project" style="width: 100%">Edit</button>
             </form>
             <form action="/delete-project/{{$project.Id}}" method="post">

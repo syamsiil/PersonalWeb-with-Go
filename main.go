@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
@@ -31,6 +32,8 @@ type Project struct {
 	Html5			bool
 	Image			string
 	Author			string
+	UserId			int
+	LoginName		bool
 }
  
 type User struct {
@@ -44,6 +47,7 @@ type User struct {
 type SessionData struct {
 	IsLogin bool
 	Name    string
+	NotLogin bool
 }
 
 var userData = SessionData{}
@@ -68,7 +72,7 @@ func main() {
 	e.GET("/project", project)
 	e.GET("/testimonials", testimonials)
 	e.GET("/detail-project/:id", detailProject)
-	e.GET("/update-project/:id", updateProject )
+	e.GET("/form-update-project/:id", formUpdateProject )
 
 	// Authentication
 	e.GET("/form-login", formLogin)
@@ -81,7 +85,7 @@ func main() {
 
 	e.POST("/add-project", addProject)
 	e.POST("/delete-project/:id", deleteProject)
-	e.POST("/update-project/:id", updatedProject)
+	e.POST("/updated-project", updatedProject)
  
     e.Logger.Fatal(e.Start("localhost:5000"))
 }
@@ -172,20 +176,45 @@ func project (c echo.Context)error{
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	databaseProjects, errProjects :=  connection.Conn.Query(context.Background(), "SELECT id, project_name, start_date, end_date, description, technologies, images FROM tb_project") //
+	session, _ := session.Get("session", c)
+
+	databaseProjects, errProjects :=  connection.Conn.Query(context.Background(), "SELECT tb_project.id, project_name, start_date, end_date, description, technologies, images, tb_user.name AS author, tb_user.id FROM tb_project LEFT JOIN tb_user ON tb_project.author = tb_user.id ORDER BY tb_project.id DESC;") //
+
 
 	if errProjects != nil {
 		return c.JSON(http.StatusInternalServerError, errProjects.Error())
+	}
+
+	if session.Values["isLogin"] != true {
+		userData.NotLogin = true
+	} else {
+		userData.NotLogin = false
 	}
 
 	var resultProjects []Project
 	for databaseProjects.Next() {
 		var each = Project{}
 
-		err := databaseProjects.Scan(&each.Id, &each.ProjectName, &each.StartDate, &each.EndDate, &each.Description, &each.Technologies, &each.Image)
+		// each.Author = "Surya Elidanto" // udah otomatis, kita matiin
+		var tempAuthor sql.NullString // temp -> temporary -> sementara
+		var tempUserId sql.NullInt64
+
+		err := databaseProjects.Scan(&each.Id, &each.ProjectName, &each.StartDate, &each.EndDate, &each.Description, &each.Technologies, &each.Image, &tempAuthor, &tempUserId)
+
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, err.Error())
 		}
+
+		if session.Values["name"] == each.Author {
+			each.LoginName = true
+		} else {
+			each.LoginName = false
+		}
+
+		each.UserId = int(tempUserId.Int64)
+		each.Author = tempAuthor.String		
+		
+		fmt.Println("INI AUTHOR: ", each.Author)
 
 		each.DistanceTime = calculateDuration(each.StartDate, each.EndDate)
 
@@ -204,8 +233,7 @@ func project (c echo.Context)error{
 
 		resultProjects = append(resultProjects, each)
 	}
-		session, _ := session.Get("session", c)
-
+		
 		projects := map[string]interface{}{
 			"Projects":     resultProjects,
 			"dataSession":  userData,
@@ -323,8 +351,8 @@ func calculateDuration(startDate time.Time, endDate time.Time ) string {
 			duration = strconv.Itoa(durationMonths) + " months"
 		} else if durationMonths > 0 {
 			duration = strconv.Itoa(durationMonths) + " month"
-		} else {
-			if durationWeeks > 1 {
+			} else {
+				if durationWeeks > 1 {
 				duration = strconv.Itoa(durationWeeks) + " weeks"
 			} else if durationWeeks > 0 {
 				duration = strconv.Itoa(durationWeeks) + " week"
@@ -337,12 +365,13 @@ func calculateDuration(startDate time.Time, endDate time.Time ) string {
 			}
 		}
 	}
-
+	
 	return duration
 }
 
 func addProject(c echo.Context)error{
-	
+	session, _ := session.Get("session", c)
+
 	projectName := c.FormValue("input-project-name")
 	startDate := c.FormValue("input-start-date")
 	endDate := c.FormValue("input-end-date")
@@ -351,23 +380,26 @@ func addProject(c echo.Context)error{
 	TechReactJs := c.FormValue("input-reactjs")
 	TechJavascript := c.FormValue("input-javascript")
 	TechHtml5 := c.FormValue("input-html5")
+	// image := c.Get("dataFile").(string)
+	author := session.Values["id"]
 	
-
-	_, err := connection.Conn.Exec(context.Background(), "INSERT INTO tb_project (project_name, start_date, end_date, description, technologies[1], technologies[2], technologies[3], technologies[4], images) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)", projectName, startDate, endDate, description, TechNodeJs, TechReactJs, TechJavascript, TechHtml5, "default.jpg")
-
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"Message ": err.Error()})
-	}
-		
 	fmt.Println("title: ", projectName)
 	fmt.Println("start date: ", startDate)
 	fmt.Println("end date: ", endDate)
 	fmt.Println("description: ", description)
-	// fmt.Println("distance time: ", distanceTime)
 	fmt.Println("skill: ", TechNodeJs)
 	fmt.Println("skill: ", TechReactJs)
 	fmt.Println("skill: ", TechJavascript)
 	fmt.Println("skill: ", TechHtml5)
+	fmt.Println("iamge: ", "default.jpg")
+	fmt.Println("author: ", author)
+
+	_, err := connection.Conn.Exec(context.Background(), "INSERT INTO tb_project (project_name, start_date, end_date, description, technologies[1], technologies[2], technologies[3], technologies[4], images, author) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9,$10)", projectName, startDate, endDate, description, TechNodeJs, TechReactJs, TechJavascript, TechHtml5, "default.jpg", author)
+	
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"Message ": err.Error()})
+	}
+		
 	return c.Redirect(http.StatusMovedPermanently, "/project") 
 }
 
@@ -382,7 +414,8 @@ func deleteProject(c echo.Context) error {
 	return c.Redirect(http.StatusMovedPermanently, "/project")
 }
 
-func updateProject(c echo.Context)error{
+func formUpdateProject(c echo.Context)error{
+	
 	id := c.Param("id")
 
 	tmpl, err := template.ParseFiles("views/update-project.html")
@@ -396,15 +429,14 @@ func updateProject(c echo.Context)error{
 	detailProject := Project {}
 
 	// query get 1 data
-	connection.Conn.QueryRow(context.Background(), "SELECT id, project_name, start_date, end_date, description, technologies, images FROM tb_project WHERE id=$1", idToInt).Scan(&detailProject.Id, &detailProject.ProjectName, &detailProject.StartDate, &detailProject.EndDate, &detailProject.Description, &detailProject.Technologies, &detailProject.Image)
+	errQuery:=connection.Conn.QueryRow(context.Background(), "SELECT * FROM tb_project WHERE id=$1", idToInt).Scan(&detailProject.Id, &detailProject.ProjectName, &detailProject.StartDate, &detailProject.EndDate, &detailProject.Description, &detailProject.Technologies,&detailProject.Image, &detailProject.Author)
 
-	// fmt.Println("ini data detail project: ", errQuery)
-
-	if err != nil {
+	fmt.Println("ini data detail project: ", errQuery)
+		
+	if err!= nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	
 	detailProject.DistanceTime = calculateDuration(detailProject.StartDate, detailProject.EndDate)
 	
 	if checkValue(detailProject.Technologies, "nodejs") { //must macthing with value in html
@@ -421,28 +453,21 @@ func updateProject(c echo.Context)error{
 	}
 
 
-	// for index, data := range dataProjects {
-		
-	// 	if index == idToInt { 
-	// 		detailProject= Project{
-	// 			ProjectName:    data.ProjectName,
-	// 			StartDate:		data.StartDate,
-	// 			EndDate: 		data.EndDate,
-	// 			Description: 	data.Description,
-	// 			DistanceTime: 	data.DistanceTime,
-	// 			Javascript:     data.Javascript,
-	// 			ReactJs:    	data.ReactJs,
-	// 			NodeJs:			data.NodeJs,
-	// 			Html5: 			data.Html5,
-	// 		}
-	// 	}
-	// }
+	session, _ := session.Get("session", c)
+
+	if session.Values["isLogin"] != true {
+		userData.IsLogin = false
+	} else {
+		userData.IsLogin = session.Values["isLogin"].(bool)
+		userData.Name = session.Values["name"].(string)
+	}
 
 	data := map[string]interface{}{ 
 		"Id":   id,
 		"Project": detailProject,
 		"StartDateString": detailProject.StartDate.Format("2006-01-02"),
 		"EndDateString":   detailProject.EndDate.Format("2006-01-02"),
+		"dataSession":     userData,
 	}
 
 	return tmpl.Execute(c.Response(),data)
@@ -467,39 +492,7 @@ func updatedProject(c echo.Context)error{
 		return c.JSON(http.StatusInternalServerError, map[string]string{"Message ": err.Error()})
 	}
 	
-	// var nodeJs bool
-	// if c.FormValue("input-nodejs") == "on" {
-	// 	nodeJs = true
-	// }
-	// var reactJs bool
-	// if c.FormValue("input-reactjs") == "on"  {
-	// 	reactJs = true
-	// }
-	// var javascript bool
-	// if c.FormValue("input-javascript") == "on" {
-	// 	javascript = true
-
-	// }
-	// var html5 bool
-	// if c.FormValue("input-html5") == "on" {
-	// 	html5 = true
-	// }
-
-	// startTime, _ := time.Parse("2006-01-02", startDate)
-	// endTime, _ := time.Parse("2006-01-02", endDate)
-
-	//  updatedProject := Project{
-	// 	ProjectName:    projectName,
-	// 	StartDate:		startTime,
-	// 	EndDate: 		endTime,
-	// 	Description: 	description,
-	// 	NodeJs: 		nodeJs,		
-	// 	ReactJs: 		reactJs,		
-	// 	Javascript: 	javascript,		
-	// 	Html5:	 		html5,		
-	// } 
-
-	// dataProjects[id] = updatedProject
+	
 
 	return c.Redirect(http.StatusMovedPermanently, "/project")
 }
