@@ -2,11 +2,10 @@ package main
 
 import (
 	"context"
-	"database/sql"
-	"fmt"
 	"log"
 	"net/http"
 	"personalWeb/connection"
+	"personalWeb/middleware"
 	"strconv"
 	"text/template"
 	"time"
@@ -60,6 +59,7 @@ func main() {
 
 
 	e.Static("/public","public")
+	e.Static("/uploads", "uploads")
 
     // e = echo package
 	// GET = the method
@@ -83,9 +83,9 @@ func main() {
 	e.GET("/form-register", formRegister)
 	e.POST("/register", register)
 
-	e.POST("/add-project", addProject)
+	e.POST("/add-project", middleware.UploadFile(addProject))
 	e.POST("/delete-project/:id", deleteProject)
-	e.POST("/updated-project", updatedProject)
+	e.POST("/updated-project", middleware.UploadFile(updatedProject))
  
     e.Logger.Fatal(e.Start("localhost:5000"))
 }
@@ -180,6 +180,7 @@ func project (c echo.Context)error{
 
 	databaseProjects, errProjects :=  connection.Conn.Query(context.Background(), "SELECT tb_project.id, project_name, start_date, end_date, description, technologies, images, tb_user.name AS author, tb_user.id FROM tb_project LEFT JOIN tb_user ON tb_project.author = tb_user.id ORDER BY tb_project.id DESC;") //
 
+	
 
 	if errProjects != nil {
 		return c.JSON(http.StatusInternalServerError, errProjects.Error())
@@ -196,10 +197,10 @@ func project (c echo.Context)error{
 		var each = Project{}
 
 		// each.Author = "Surya Elidanto" // udah otomatis, kita matiin
-		var tempAuthor sql.NullString // temp -> temporary -> sementara
-		var tempUserId sql.NullInt64
+		// var tempAuthor sql.NullString // temp -> temporary -> sementara
+		// var tempUserId sql.NullInt64
 
-		err := databaseProjects.Scan(&each.Id, &each.ProjectName, &each.StartDate, &each.EndDate, &each.Description, &each.Technologies, &each.Image, &tempAuthor, &tempUserId)
+		err := databaseProjects.Scan(&each.Id, &each.ProjectName, &each.StartDate, &each.EndDate, &each.Description, &each.Technologies, &each.Image, &each.Author, &each.UserId)
 
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, err.Error())
@@ -211,10 +212,10 @@ func project (c echo.Context)error{
 			each.LoginName = false
 		}
 
-		each.UserId = int(tempUserId.Int64)
-		each.Author = tempAuthor.String		
+		// each.UserId = int(tempUserId.Int64)
+		// each.Author = tempAuthor.String		
 		
-		fmt.Println("INI AUTHOR: ", each.Author)
+		// fmt.Println("INI AUTHOR: ", each.Author)
 
 		each.DistanceTime = calculateDuration(each.StartDate, each.EndDate)
 
@@ -276,20 +277,28 @@ func testimonials (c echo.Context)error{
 }
 
 func detailProject (c echo.Context)error{
-	id := c.Param("id")
-
 	tmpl, err := template.ParseFiles("views/detail-project.html")
 
 	if err !=nil{
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
+	session, _ := session.Get("session", c)
+
+	if session.Values["isLogin"] != true {
+		userData.IsLogin = false
+	} else {
+		userData.IsLogin = session.Values["isLogin"].(bool)
+		userData.Name = session.Values["name"].(string)
+	}
+
+	id := c.Param("id")
 	idToInt, _ := strconv.Atoi(id)
 
 	detailProject := Project {}
 
 	// query get 1 data
-	connection.Conn.QueryRow(context.Background(), "SELECT id, project_name, start_date, end_date, description, technologies, images FROM tb_project WHERE id=$1", idToInt).Scan(&detailProject.Id, &detailProject.ProjectName, &detailProject.StartDate, &detailProject.EndDate, &detailProject.Description, &detailProject.Technologies, &detailProject.Image)
+	connection.Conn.QueryRow(context.Background(), "SELECT tb_project.id, project_name, start_date, end_date, description, technologies, images, tb_user.name AS author FROM tb_project LEFT JOIN tb_user ON tb_project.author = tb_user.id WHERE tb_project.id=$1", idToInt).Scan(&detailProject.Id, &detailProject.ProjectName, &detailProject.StartDate, &detailProject.EndDate, &detailProject.Description, &detailProject.Technologies, &detailProject.Image, &detailProject.Author)
 
 	// fmt.Println("ini data detail project: ", errQuery)
 
@@ -313,20 +322,13 @@ func detailProject (c echo.Context)error{
 		detailProject.Html5 = true
 	}
 
-	session, _ := session.Get("session", c)
-
-	if session.Values["isLogin"] != true {
-		userData.IsLogin = false
-	} else {
-		userData.IsLogin = session.Values["isLogin"].(bool)
-		userData.Name = session.Values["name"].(string)
-	}
-
+	
 	data := map[string]interface{}{ 
 		"Id":   id,
 		"Project": detailProject,
 		"StartDateString": detailProject.StartDate.Format("2006-01-02"),
 		"EndDateString":   detailProject.EndDate.Format("2006-01-02"),
+		"dataSession":     userData,
 	}
 
 	return tmpl.Execute(c.Response(),data)
@@ -380,21 +382,22 @@ func addProject(c echo.Context)error{
 	TechReactJs := c.FormValue("input-reactjs")
 	TechJavascript := c.FormValue("input-javascript")
 	TechHtml5 := c.FormValue("input-html5")
-	// image := c.Get("dataFile").(string)
+	image := c.Get("dataFile").(string)
 	author := session.Values["id"]
 	
-	fmt.Println("title: ", projectName)
-	fmt.Println("start date: ", startDate)
-	fmt.Println("end date: ", endDate)
-	fmt.Println("description: ", description)
-	fmt.Println("skill: ", TechNodeJs)
-	fmt.Println("skill: ", TechReactJs)
-	fmt.Println("skill: ", TechJavascript)
-	fmt.Println("skill: ", TechHtml5)
-	fmt.Println("iamge: ", "default.jpg")
-	fmt.Println("author: ", author)
+	// fmt.Println("title: ", projectName)
+	// fmt.Println("start date: ", startDate)
+	// fmt.Println("end date: ", endDate)
+	// fmt.Println("description: ", description)
+	// fmt.Println("skill: ", TechNodeJs)
+	// fmt.Println("skill: ", TechReactJs)
+	// fmt.Println("skill: ", TechJavascript)
+	// fmt.Println("skill: ", TechHtml5)
+	// fmt.Println("iamge: ", "default.jpg")
+	// fmt.Println("author: ", author)
 
-	_, err := connection.Conn.Exec(context.Background(), "INSERT INTO tb_project (project_name, start_date, end_date, description, technologies[1], technologies[2], technologies[3], technologies[4], images, author) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9,$10)", projectName, startDate, endDate, description, TechNodeJs, TechReactJs, TechJavascript, TechHtml5, "default.jpg", author)
+
+	_, err := connection.Conn.Exec(context.Background(), "INSERT INTO tb_project (project_name, start_date, end_date, description, technologies[1], technologies[2], technologies[3], technologies[4], images, author) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9,$10)", projectName, startDate, endDate, description, TechNodeJs, TechReactJs, TechJavascript, TechHtml5, image, author)
 	
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"Message ": err.Error()})
@@ -431,9 +434,9 @@ func formUpdateProject(c echo.Context)error{
 	// query get 1 data
 	errQuery:=connection.Conn.QueryRow(context.Background(), "SELECT * FROM tb_project WHERE id=$1", idToInt).Scan(&detailProject.Id, &detailProject.ProjectName, &detailProject.StartDate, &detailProject.EndDate, &detailProject.Description, &detailProject.Technologies,&detailProject.Image, &detailProject.Author)
 
-	fmt.Println("ini data detail project: ", errQuery)
+	// fmt.Println("ini data detail project: ", errQuery)
 		
-	if err!= nil {
+	if errQuery!= nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
@@ -474,8 +477,9 @@ func formUpdateProject(c echo.Context)error{
 }
 
 func updatedProject(c echo.Context)error{
+	session, _ := session.Get("session", c)
 	
-	id, _:= strconv.Atoi(c.Param("id"))
+	id := c.FormValue("id")
 	projectName := c.FormValue("input-project-name")
 	startDate := c.FormValue("input-start-date")
 	endDate := c.FormValue("input-end-date")
@@ -484,16 +488,18 @@ func updatedProject(c echo.Context)error{
 	TechReactJs := c.FormValue("input-reactjs")
 	TechJavascript := c.FormValue("input-javascript")
 	TechHtml5 := c.FormValue("input-html5")
+	image := c.Get("dataFile").(string)
+	author := session.Values["id"]
+
+	_, err := strconv.Atoi(id)
 	
 
-	_, err := connection.Conn.Exec(context.Background(), "UPDATE tb_project SET project_name=$1, start_date=$2, end_date=$3, description=$4, technologies[1]=$5, technologies[2]=$6, technologies[3]=$7, technologies[4]=$8, images=$9 WHERE id=$10", projectName, startDate, endDate, description, TechNodeJs, TechReactJs, TechJavascript, TechHtml5, "default.jpg", id)
+	_, errQuery := connection.Conn.Exec(context.Background(), "UPDATE tb_project SET project_name=$1, start_date=$2, end_date=$3, description=$4, technologies[1]=$5, technologies[2]=$6, technologies[3]=$7, technologies[4]=$8, images=$9, author=$10 WHERE id=$11", projectName, startDate, endDate, description, TechNodeJs, TechReactJs, TechJavascript, TechHtml5, image, author, id)
 
-	if err != nil {
+	if errQuery != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"Message ": err.Error()})
 	}
-	
-	
-
+		
 	return c.Redirect(http.StatusMovedPermanently, "/project")
 }
 
