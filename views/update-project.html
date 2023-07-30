@@ -195,6 +195,10 @@
                   id="input-nodejs"
                   class="multi-input"
                   value="nodejs"
+                  {{if
+                  .Project.NodeJs}}
+                  checked
+                  {{end}}
                 />
                 <label class="label-skill" for="input-nodejs">Node Js</label>
               </div>
@@ -205,6 +209,10 @@
                   id="input-reactjs"
                   class="multi-input"
                   value="reactjs"
+                  {{if
+                  .Project.ReactJs}}
+                  checked
+                  {{end}}
                 />
                 <label class="label-skill" for="input-reactjs">React Js</label>
               </div>
@@ -217,6 +225,10 @@
                   id="input-javascript"
                   class="multi-input"
                   value="javascript"
+                  {{if
+                  .Project.Javascript}}
+                  checked
+                  {{end}}
                 />
                 <label class="label-skill" for="input-javascript"
                   >Javascript</label
@@ -229,6 +241,10 @@
                   id="input-html5"
                   class="multi-input"
                   value="html5"
+                  {{if
+                  .Project.Html5}}
+                  checked
+                  {{end}}
                 />
                 <label class="label-skill" for="input-html5">HTML5</label>
               </div>
@@ -238,7 +254,13 @@
           <!-- upload image -->
           <div class="form-detail">
             <label for="input-image">Upload Image</label>
-            <input type="file" name="input-image" id="input-image" />
+            <input
+              type="file"
+              name="input-image"
+              id="input-image"
+              value=" {{.Project.Javascript}}"
+              required
+            />
           </div>
 
           <div style="text-align: end">

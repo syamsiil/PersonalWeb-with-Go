@@ -515,7 +515,12 @@ func formLogin (c echo.Context)error{
 	// if sess.Values["isLogin"] != true {
 	// 	return c.Redirect(http.StatusMovedPermanently, "/")
 	// }
+
 	session, _ := session.Get("session", c)
+
+	if session.Values["isLogin"] == true {
+		return c.Redirect(http.StatusTemporaryRedirect, "/")
+	}
 
 	messageFlash := map[string]interface{}{
 		"FlashStatus":  session.Values["status"],
