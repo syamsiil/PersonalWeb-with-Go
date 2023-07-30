@@ -42,7 +42,6 @@ type User struct {
 	HashedPassword 	string
 }
 
-
 type SessionData struct {
 	IsLogin bool
 	Name    string
@@ -235,7 +234,7 @@ func project (c echo.Context)error{
 		resultProjects = append(resultProjects, each)
 	}
 		
-		projects := map[string]interface{}{
+		projects := map[string]interface{}{ //Kode map[string]int maknanya adalah, tipe data map dengan key bertipe string dan value bertipe interface/any.
 			"Projects":     resultProjects,
 			"dataSession":  userData,
 			"FlashStatus":  session.Values["status"],
@@ -247,10 +246,6 @@ func project (c echo.Context)error{
 		session.Save(c.Request(), c.Response())
 	
 		return tmpl.Execute(c.Response(), projects)
-	
-
-	//Kode map[string]int maknanya adalah, tipe data map dengan key bertipe string dan value bertipe interface/any.
-	
 }
 
 func testimonials (c echo.Context)error{
@@ -564,7 +559,6 @@ func redirectWithMessage(c echo.Context, message string, status bool, redirectPa
 	sess.Save(c.Request(), c.Response())
 	return c.Redirect(http.StatusMovedPermanently, redirectPath)
 }
-
 
 func register(c echo.Context) error {
 	err := c.Request().ParseForm()
