@@ -122,6 +122,28 @@
     </nav>
     <!-- Navbar End -->
 
+    {{if .FlashMessage}} {{if .FlashStatus}}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      {{.FlashMessage}}
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+    {{else}}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{.FlashMessage}}
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+    {{end}} {{end}}
+
     <div
       class="container-fluids d-flex align-items-center justify-content-center"
       style="height: 80vh"

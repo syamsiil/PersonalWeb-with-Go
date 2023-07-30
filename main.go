@@ -547,7 +547,18 @@ func formRegister (c echo.Context)error{
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	return tmpl.Execute(c.Response(),nil)
+	session, _ := session.Get("session", c)
+
+	messageFlash := map[string]interface{}{
+		"FlashStatus":  session.Values["status"],
+		"FlashMessage": session.Values["message"],
+	}
+
+	delete(session.Values, "status")
+	delete(session.Values, "message")
+	session.Save(c.Request(), c.Response())
+
+	return tmpl.Execute(c.Response(), messageFlash)
 }
 
 // authentication and session
@@ -566,7 +577,7 @@ func redirectWithMessage(c echo.Context, message string, status bool, redirectPa
 }
 
 func register(c echo.Context) error {
-	err := c.Request().ParseForm()
+	err := c.Request().ParseForm() // get data 
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -574,10 +585,16 @@ func register(c echo.Context) error {
 	name := c.FormValue("name")
 	email := c.FormValue("email")
 	password := c.FormValue("password")
-
 	passwordHash, _ := bcrypt.GenerateFromPassword([]byte(password), 10)
 
+	user := User{}
+	err= connection.Conn.QueryRow(context.Background(), "SELECT * FROM tb_user WHERE email =$1", email).Scan(&user.Id, &user.Name, &user.Email, &user.HashedPassword)
+	if err == nil {
+		return redirectWithMessage(c, "Email already in use !", false,  "/form-register")
+	}
+
 	_, err = connection.Conn.Exec(context.Background(), "INSERT INTO tb_user (name, email, password) VALUES ($1, $2, $3)", name, email, passwordHash)
+
 	if err != nil {
 		redirectWithMessage(c, "RegistrationFailed, please try again!", false, "/form-register")
 	}
@@ -586,29 +603,29 @@ func register(c echo.Context) error {
 }
 
 func login(c echo.Context) error {
-	err := c.Request().ParseForm()
+	err := c.Request().ParseForm() // get data/req client to server 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	email := c.FormValue("email")
+	email := c.FormValue("email") //get value by name
 	password := c.FormValue("password")
 
-	var user = User{}
+	var user = User{} //create new struct base on User Struct
 
 	errEmail := connection.Conn.QueryRow(context.Background(), "SELECT * FROM tb_user WHERE email=$1", email).Scan(&user.Id, &user.Name, &user.Email, &user.HashedPassword)
-	errPass := bcrypt.CompareHashAndPassword([]byte(user.HashedPassword), []byte(password))
+	errPass := bcrypt.CompareHashAndPassword([]byte(user.HashedPassword), []byte(password)) // compare email n password
 
 	if errEmail != nil {
-		return redirectWithMessage(c, "Email wrong!", true, "/form-login")
+		return redirectWithMessage(c, "Email wrong!", false, "/form-login") //alert if email wrong 
 	}
 
 	if errPass != nil {
-		return redirectWithMessage(c, "Password wrong!", true, "/form-login")
+		return redirectWithMessage(c, "Password wrong!", false, "/form-login")
 	}
 
-	session, _ := session.Get("session", c)
-	session.Options.MaxAge = 3600
+	session, _ := session.Get("session", c) // get session
+	session.Options.MaxAge = 3600 // session time
 	session.Values["message"] = "login Success"
 	session.Values["status"] = true // show alert
 	session.Values["name"] = user.Name
@@ -621,7 +638,7 @@ func login(c echo.Context) error {
 
 func logout(c echo.Context) error {
 	session, _ := session.Get("session", c)
-	session.Options.MaxAge = -1
+	session.Options.MaxAge = -1 //make the session expired
 	session.Values["isLogin"] = false
 	session.Save(c.Request(), c.Response())
 
