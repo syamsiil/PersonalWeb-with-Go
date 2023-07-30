@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Project</title>
 
-    <link rel="icon" href="public/images/logo3.png" />
+    <link rel="icon" href="public/images/logo.png" />
 
     <!-- Link To CSS -->
     <link rel="stylesheet" href="public/css/add-project.css" />
@@ -60,16 +60,51 @@
               <a class="nav-link" href="testimonials">Testimonials</a>
             </li>
           </ul>
-
-          <form class="d-flex">
-            {{if .FlashStatus}}
-            <a class="nav-link me-3" href="# ">Halo, {{.FlashName}}</a>
-            <a class="nav-link me-3" href="/logout " id="logout">Logout</a>
+          <form class="d-flex" style="align-items: center">
+            {{if .dataSession.IsLogin}}
+            <a
+              class="nav-link me-3"
+              href="#"
+              style="font-size: 18px; font-weight: 550; color: #83b735"
+              ><span style="color: #7b7b7b; font-size: 18px; font-weight: 500"
+                >Helo</span
+              >, {{.dataSession.Name}}</a
+            >
+            <a
+              class="nav-link me-3 v"
+              href="/logout "
+              id="logout"
+              style="
+                border: 1px solid #99cc4c;
+                padding: 6px 12px;
+                border-radius: 5px;
+                font-size: 16px;
+                color: #83b735;
+              "
+              >Logout</a
+            >
             {{else}}
-            <a class="nav-link me-3" href="/form-register " id="register"
+            <a
+              class="nav-link me-3"
+              href="/form-register "
+              id="register"
+              style="font-size: 16px"
               >Register</a
             >
-            <a class="nav-link me-3" href="/form-login " id="login">Login</a>
+            <a
+              class="nav-link me-3"
+              href="/form-login "
+              id="login"
+              style="
+                padding: 6px 12px;
+                font-size: 16;
+                border: 1px solid #474fa0;
+                border-radius: 5px;
+                background-color: #474fa0;
+                color: #fff;
+              "
+              >Login</a
+            >
             {{end}}
 
             <button
@@ -148,7 +183,11 @@
         {{else}} {{if $.dataSession.NotLogin}}
 
         <div class="project-card">
-          <img src="#" alt="" class="project-card-img mb-2" />
+          <img
+            src="/uploads/{{$project.Image}}"
+            alt=""
+            class="project-card-img mb-2"
+          />
           <a href="/detail-project/{{$project.Id}}" class="project-card-title"
             >{{$project.ProjectName}}</a
           >

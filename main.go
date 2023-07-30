@@ -87,7 +87,7 @@ func main() {
 	e.POST("/delete-project/:id", deleteProject)
 	e.POST("/updated-project", middleware.UploadFile(updatedProject))
  
-    e.Logger.Fatal(e.Start("localhost:5000"))
+    e.Logger.Fatal(e.Start("localhost:7000"))
 }
 
 func helloWorld(c echo.Context)error {

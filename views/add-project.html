@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Add Project</title>
 
-    <link rel="icon" href="public/images/logo3.png" />
+    <link rel="icon" href="public/images/logo.png" />
 
     <!-- Link To CSS -->
     <link rel="stylesheet" href="public/css/add-project.css" />
@@ -61,15 +61,63 @@
             </li>
           </ul>
 
-          <button
-            class="btn btn-nav"
-            type="submit"
-            style="background-color: #99cc4c"
-          >
-            <a href="contact" style="text-decoration: none; color: #fff"
-              >Contact</a
+          <form class="d-flex" style="align-items: center">
+            {{if .dataSession.IsLogin}}
+            <a
+              class="nav-link me-3"
+              href="#"
+              style="font-size: 18px; font-weight: 550; color: #83b735"
+              ><span style="color: #7b7b7b; font-size: 18px; font-weight: 500"
+                >Helo</span
+              >, {{.dataSession.Name}}</a
             >
-          </button>
+            <a
+              class="nav-link me-3 v"
+              href="/logout "
+              id="logout"
+              style="
+                border: 1px solid #99cc4c;
+                padding: 6px 12px;
+                border-radius: 5px;
+                font-size: 16px;
+                color: #83b735;
+              "
+              >Logout</a
+            >
+            {{else}}
+            <a
+              class="nav-link me-3"
+              href="/form-register "
+              id="register"
+              style="font-size: 16px"
+              >Register</a
+            >
+            <a
+              class="nav-link me-3"
+              href="/form-login "
+              id="login"
+              style="
+                padding: 6px 12px;
+                font-size: 16;
+                border: 1px solid #474fa0;
+                border-radius: 5px;
+                background-color: #474fa0;
+                color: #fff;
+              "
+              >Login</a
+            >
+            {{end}}
+
+            <button
+              class="btn btn-nav"
+              type="submit"
+              style="background-color: #99cc4c"
+            >
+              <a href="contact" style="text-decoration: none; color: #fff"
+                >Contact</a
+              >
+            </button>
+          </form>
         </div>
       </div>
     </nav>
